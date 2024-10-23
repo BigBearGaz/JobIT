@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'Offre{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Détails de l'Offre</h1>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <img src="{{ asset('uploads/' ~ offre.logo) }}" alt="{{ offre.titre }}" class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-8">
+                            <h2>{{ offre.titre }}</h2>
+                            <p><strong>Lieu :</strong> {{ offre.Lieu }}</p>
+                            <p><strong>Durée :</strong> {{ offre.duree }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h3>Description</h3>
+                        <p>{{ offre.description }}</p>
+                    </div>
+
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ offre.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date de publication</th>
+                                <td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date de modification</th>
+                                <td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'Non définie' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-primary">Modifier</a>
+                {{ include('offre/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

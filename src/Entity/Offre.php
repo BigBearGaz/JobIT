@@ -36,7 +36,7 @@ class Offre
     private ?string $Lieu = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $durée = null;
+    private ?string $duree = null;
 
     #[ORM\ManyToOne(inversedBy: 'offres')]
     #[ORM\JoinColumn(nullable: false)]
@@ -133,14 +133,14 @@ class Offre
         return $this;
     }
 
-    public function getDurée(): ?string
+    public function getDuree(): ?string
     {
-        return $this->durée;
+        return $this->duree;
     }
 
-    public function setDurée(?string $durée): static
+    public function setDuree(?string $duree): static
     {
-        $this->durée = $durée;
+        $this->duree = $duree;
 
         return $this;
     }

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Offres{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Liste des Offres</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for offre in offres %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="card-img-top" alt="{{ offre.titre }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ offre.titre }}</h5>
+                        <p class="card-text">{{ offre.description|slice(0, 100) ~ '...' }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Lieu :</strong> {{ offre.Lieu }}</li>
+                        <li class="list-group-item"><strong>Durée :</strong> {{ offre.duree }}</li>
+                        <li class="list-group-item"><strong>Publié le :</strong> {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</li>
+                    </ul>
+                    <div class="card-footer text-center">
+                        <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
+                        <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    Aucune offre trouvée.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ path('app_offre_new') }}" class="btn btn-success">Créer une nouvelle offre</a>
+    </div>
+</div>
+{% endblock %}
