@@ -51,6 +51,9 @@ class Offre
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'offre')]
     private Collection $users;
 
+    #[ORM\Column]
+    private ?int $auteur = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -195,6 +198,18 @@ class Offre
                 $user->setOffre(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuteur(): ?int
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(int $auteur): static
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }

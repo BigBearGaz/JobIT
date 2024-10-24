@@ -70,7 +70,7 @@ public function new(
         $entityManager->flush();
 
         $this->addFlash('success', 'L\'utilisateur a été créé avec succès.');
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
     }
 
     return $this->render('user/new.html.twig', [

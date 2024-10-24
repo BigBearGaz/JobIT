@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Offre;
+use App\Entity\Statut;
+use App\Entity\TypeContrat;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -41,6 +43,10 @@ class UserType extends AbstractType
             ])
             ->add('date_naissance', null, [
                 'widget' => 'single_text',
+            ])
+            ->add('statut', EntityType::class, [
+                'class' => Statut::class,
+                'choice_label' => 'nom',
             ])
             ->add('Adresse')
             ->add('tel')

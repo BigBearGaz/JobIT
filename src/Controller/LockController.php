@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class AccueilController extends AbstractController
+class LockController extends AbstractController
 {
-    #[Route('/offre', name: 'app_accueil')]
+    #[Route('/503', name: 'app_lock')]
     public function index(): Response
     {
-        return $this->render('accueil/index.html.twig', [
-            'controller_name' => 'AccueilController',
+        return $this->render('lock/index.html.twig', [
+            'controller_name' => 'LockController',
         ]);
     }
 }

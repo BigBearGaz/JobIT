@@ -14,14 +14,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/offre')]
+#[Route('/')]
 final class OffreController extends AbstractController
 {
     #[Route(name: 'app_offre_index', methods: ['GET'])]
     public function index(OffreRepository $offreRepository): Response
     {
+        $userId = ($this->getUser()->getId());
         return $this->render('offre/index.html.twig', [
             'offres' => $offreRepository->findAll(),
+            'userId' => $userId
         ]);
     }
 
@@ -75,8 +77,10 @@ final class OffreController extends AbstractController
     #[Route('/{id}', name: 'app_offre_show', methods: ['GET'])]
     public function show(Offre $offre): Response
     {
+        $userId = ($this->getUser()->getId());
         return $this->render('offre/show.html.twig', [
             'offre' => $offre,
+            'userId' => $userId
         ]);
     }
 
@@ -90,7 +94,9 @@ final class OffreController extends AbstractController
         #[Autowire('%kernel.project_dir%/public/uploads')] string $brochuresDirectory
     ): Response
     {
-
+        if ($offre->getAuteur() != $this->getUser()->getId()){
+            return $this->redirectToRoute('app_lock'); 
+        }
         $form = $this->createForm(OffreType::class, $offre);
         $form->handleRequest($request);
         

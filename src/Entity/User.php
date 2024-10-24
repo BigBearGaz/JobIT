@@ -63,6 +63,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Offre::class, inversedBy: 'users')]
     private Collection $Offre_user;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Statut $statut = null;
+
+
     public function __construct()
     {
         $this->Offre_user = new ArrayCollection();
@@ -250,4 +254,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getStatut(): ?Statut
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?Statut $statut): static
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+
 }
