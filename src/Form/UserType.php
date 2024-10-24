@@ -8,12 +8,14 @@ use App\Entity\TypeContrat;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
@@ -41,8 +43,17 @@ class UserType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('date_naissance', null, [
+            ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer une date de naissance.',
+                    ]),
+                    new LessThanOrEqual([
+                        'value' => new \DateTime(), // La date actuelle
+                        'message' => 'La date de naissance ne peut pas être dans le futur.',
+                    ]),
+                ],
             ])
             ->add('statut', EntityType::class, [
                 'class' => Statut::class,

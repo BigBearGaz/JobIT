@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Offre;
 use App\Form\OffreType;
+use App\Repository\CategoryRepository;
 use App\Repository\OffreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,12 +21,59 @@ final class OffreController extends AbstractController
     #[Route(name: 'app_offre_index', methods: ['GET'])]
     public function index(OffreRepository $offreRepository): Response
     {
-        $userId = ($this->getUser()->getId());
+        if ($this->getUser())
+        {
+           $userId = ($this->getUser()->getId());
+        }
+        else {
+            $userId=0;
+        }
+        $offres = $offreRepository->findBy([], ['date_publication' => 'ASC']);
+
+
         return $this->render('offre/index.html.twig', [
-            'offres' => $offreRepository->findAll(),
+            'offres' => $offres,
             'userId' => $userId
         ]);
     }
+
+    #[Route('/dateDesc',name:'app_offre_par_date', methods: ['GET'])]
+public function Desc(OffreRepository $offreRepository): Response
+{
+    if ($this->getUser())
+        {
+           $userId = ($this->getUser()->getId());
+        }
+        else {
+            $userId=0;
+        }
+    
+    $offres = $offreRepository->findBy([], ['date_publication' => 'DESC']);
+    
+    return $this->render('offre/index.html.twig', [
+        'offres' => $offres,
+        'userId' => $userId
+    ]);
+}
+
+#[Route('/dateAsc',name:'app_offre_par_datee', methods: ['GET'])]
+public function Asc(OffreRepository $offreRepository): Response
+{
+    if ($this->getUser())
+        {
+           $userId = ($this->getUser()->getId());
+        }
+        else {
+            $userId=0;
+        }
+    
+    $offres = $offreRepository->findBy([], ['date_publication' => 'ASC']);
+    
+    return $this->render('offre/index.html.twig', [
+        'offres' => $offres,
+        'userId' => $userId
+    ]);
+}
 
     #[Route('/new', name: 'app_offre_new', methods: ['GET', 'POST'])]
     public function new(
@@ -77,7 +125,13 @@ final class OffreController extends AbstractController
     #[Route('/{id}', name: 'app_offre_show', methods: ['GET'])]
     public function show(Offre $offre): Response
     {
-        $userId = ($this->getUser()->getId());
+        if ($this->getUser())
+        {
+           $userId = ($this->getUser()->getId());
+        }
+        else {
+            $userId=0;
+        }
         return $this->render('offre/show.html.twig', [
             'offre' => $offre,
             'userId' => $userId
@@ -145,5 +199,28 @@ final class OffreController extends AbstractController
         }
 
         return $this->redirectToRoute('app_offre_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('offre/annonces/{id}', name: 'app_annonces', methods: ['GET'])]
+    public function showCategorie(OffreRepository $categories, CategoryRepository $cr, $id): Response
+
+    {
+        $nomCategorie = $cr->find($id)->getNom();
+        $annonces = $categories->findBy(['category' => $id]);
+
+        if ($this->getUser())
+        {
+           $userId = ($this->getUser()->getId());
+        }
+        else {
+            $userId=0;
+        }
+
+        return $this->render('offre/annonces.html.twig', [
+            'annonces' => $annonces,
+            'userId' => $userId,
+            'nomCategorie' => $nomCategorie
+        ]);
     }
 }

@@ -10,7 +10,7 @@
           <a class="nav-link active" aria-current="page" href="/">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="user/new">Inscription</a>
+          <a class="nav-link" href="/user/new">Inscription</a>
         </li> 
          <li class="nav-item">
           <a class="nav-link" href="/login">Connexion</a>
@@ -20,9 +20,9 @@
             Catégories
           </a>
           <ul class="dropdown-menu">
-            {% for categorie in categories %}
-            
-              <li><a class="dropdown-item" href="#">{{ categorie.name }}</a></li>
+            {% for categorie in categories.getAllCategories() %}
+              
+              <li><a class="dropdown-item" href="/offre/annonces/{{ categorie.id }}">{{ categorie.nom }}</a></li>
               
             {% endfor %}
           </ul>

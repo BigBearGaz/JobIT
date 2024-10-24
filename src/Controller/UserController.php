@@ -25,10 +25,6 @@ final class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
-
-
-
-
     
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
 public function new(
@@ -70,7 +66,7 @@ public function new(
         $entityManager->flush();
 
         $this->addFlash('success', 'L\'utilisateur a été créé avec succès.');
-        return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_offre_index', [], Response::HTTP_SEE_OTHER);
     }
 
     return $this->render('user/new.html.twig', [
@@ -129,14 +125,4 @@ public function new(
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-    }
 }
