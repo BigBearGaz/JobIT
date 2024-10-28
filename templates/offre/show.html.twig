@@ -17,6 +17,7 @@
                         <div class="col-md-8">
                             <h2>{{ offre.titre }}</h2>
                             <p><strong>Lieu :</strong> {{ offre.Lieu }}</p>
+                            <p><strong>Catégorie :</strong> {{ offre.Category.nom }}</p>
                             <p><strong>Durée :</strong> {{ offre.duree }}</p>
                         </div>
                     </div>
@@ -30,7 +31,7 @@
                         <tbody>
                             <tr>
                                 <th>ID</th>
-                                <td>{{ offre.id }}</td>
+                                <td>{{ nomAuteur }}</td>
                             </tr>
                             <tr>
                                 <th>Date de publication</th>

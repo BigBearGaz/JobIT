@@ -78,4 +78,9 @@ final class TypeContratController extends AbstractController
 
         return $this->redirectToRoute('app_type_contrat_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    public function __toString()
+    {
+        return $this->getNom();
+    }
 }

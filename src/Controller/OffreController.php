@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Offre;
+use App\Entity\TypeContrat;
 use App\Form\OffreType;
 use App\Repository\CategoryRepository;
 use App\Repository\OffreRepository;
@@ -21,9 +22,10 @@ final class OffreController extends AbstractController
     #[Route(name: 'app_offre_index', methods: ['GET'])]
     public function index(OffreRepository $offreRepository): Response
     {
+
         if ($this->getUser())
         {
-           $userId = ($this->getUser()->getId());
+            $userId = ($this->getUser()->getId());
         }
         else {
             $userId=0;
@@ -33,7 +35,8 @@ final class OffreController extends AbstractController
 
         return $this->render('offre/index.html.twig', [
             'offres' => $offres,
-            'userId' => $userId
+            'userId' => $userId,
+            
         ]);
     }
 
@@ -42,7 +45,7 @@ public function Desc(OffreRepository $offreRepository): Response
 {
     if ($this->getUser())
         {
-           $userId = ($this->getUser()->getId());
+            $userId = ($this->getUser()->getId());
         }
         else {
             $userId=0;
@@ -61,7 +64,7 @@ public function Asc(OffreRepository $offreRepository): Response
 {
     if ($this->getUser())
         {
-           $userId = ($this->getUser()->getId());
+            $userId = ($this->getUser()->getId());
         }
         else {
             $userId=0;
@@ -108,6 +111,7 @@ public function Asc(OffreRepository $offreRepository): Response
                 $offre->setLogo($newFilename);
             }
 
+            $offre->setAuteur($this->getUser()->getId());
             $offre->setDatePublication(new \DateTime());
             $offre->setDateModification(new \DateTime());
             $entityManager->persist($offre);
@@ -122,23 +126,25 @@ public function Asc(OffreRepository $offreRepository): Response
         ]);
     }
 
-    #[Route('/{id}', name: 'app_offre_show', methods: ['GET'])]
+    #[Route('/show/{id}', name: 'app_offre_show', methods: ['GET'])]
     public function show(Offre $offre): Response
     {
+        $nomAuteur = $this->getUser()->getNom();
         if ($this->getUser())
         {
-           $userId = ($this->getUser()->getId());
+            $userId = ($this->getUser()->getId());
         }
         else {
             $userId=0;
         }
         return $this->render('offre/show.html.twig', [
             'offre' => $offre,
-            'userId' => $userId
+            'userId' => $userId,
+            'nomAuteur' => $nomAuteur
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_offre_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_offre_edit', methods: ['GET', 'POST'])]
     
     public function edit(
         Request $request,
@@ -190,7 +196,7 @@ public function Asc(OffreRepository $offreRepository): Response
         ]);
     }
 
-    #[Route('/{id}', name: 'app_offre_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_offre_delete', methods: ['POST'])]
     public function delete(Request $request, Offre $offre, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$offre->getId(), $request->getPayload()->getString('_token'))) {
