@@ -61,7 +61,7 @@ public function new(
                 $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de la photo.');
             }
         }
-
+        $user->setRoles(['ROLE_USER']);
         $entityManager->persist($user);
         $entityManager->flush();
 

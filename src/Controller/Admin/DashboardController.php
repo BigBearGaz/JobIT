@@ -53,6 +53,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Type de Contrat', 'fas fa-user', TypeContrat::class);
         yield MenuItem::linkToCrud('Entreprise', 'fas fa-user', Entreprise::class);
         yield MenuItem::linkToCrud('Statut', 'fas fa-user', Statut::class);
-
+        yield MenuItem::linkToRoute('Retour au site', 'fas fa-home', 'app_offre_index');
     }
 }

@@ -21,10 +21,11 @@ final class OffreController extends AbstractController
 {
     #[Route(name: 'app_offre_index', methods: ['GET'])]
     public function index(OffreRepository $offreRepository): Response
-    {
-
+    {   
+        $statut = 0;
         if ($this->getUser())
         {
+            $statut =$this->getUser()->getStatut();
             $userId = ($this->getUser()->getId());
         }
         else {
@@ -36,7 +37,7 @@ final class OffreController extends AbstractController
         return $this->render('offre/index.html.twig', [
             'offres' => $offres,
             'userId' => $userId,
-            
+            'statut' => $statut
         ]);
     }
 
@@ -109,6 +110,9 @@ public function Asc(OffreRepository $offreRepository): Response
                 // updates the 'brochureFilename' property to store the PDF file name
                 // instead of its contents
                 $offre->setLogo($newFilename);
+            } else {
+                $logo = $this->getUser()->getPhoto(); 
+                $offre->setLogo($logo);
             }
 
             $offre->setAuteur($this->getUser()->getId());
