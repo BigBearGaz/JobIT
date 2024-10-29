@@ -37,6 +37,9 @@ final class UserController extends AbstractController
         #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory
     ): Response
     {   
+        if ($user->getId() !== $this->getUser()->getId()){
+            return $this->redirectToRoute('app_lock'); 
+        }
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
