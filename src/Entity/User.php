@@ -48,8 +48,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $Adresse = null;
 
-    #[ORM\Column]
-    private ?int $tel = null;
+    #[ORM\Column(length: 20)]
+    private ?string $tel = null;
 
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
@@ -202,12 +202,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTel(): ?int
+    public function getTel(): ?string
     {
         return $this->tel;
     }
 
-    public function setTel(int $tel): static
+    public function setTel(string $tel): self
     {
         $this->tel = $tel;
 

@@ -52,7 +52,7 @@ public function Desc(OffreRepository $offreRepository): Response
             $userId=0;
         }
     
-    $offres = $offreRepository->findBy([], ['date_publication' => 'DESC']);
+    $offres = $offreRepository->findBy([], ['date_modification' => 'DESC']);
     
     return $this->render('offre/index.html.twig', [
         'offres' => $offres,
@@ -71,7 +71,7 @@ public function Asc(OffreRepository $offreRepository): Response
             $userId=0;
         }
     
-    $offres = $offreRepository->findBy([], ['date_publication' => 'ASC']);
+    $offres = $offreRepository->findBy([], ['date_modification' => 'ASC']);
     
     return $this->render('offre/index.html.twig', [
         'offres' => $offres,
@@ -148,7 +148,7 @@ public function Asc(OffreRepository $offreRepository): Response
         #[Autowire('%kernel.project_dir%/public/uploads')] string $brochuresDirectory
     ): Response
     {
-        if ($offre->getAuteur() != $this->getUser()->getId()){
+        if ($offre->getAuteur()->getId() !== $this->getUser()->getId()){
             return $this->redirectToRoute('app_lock'); 
         }
         $form = $this->createForm(OffreType::class, $offre);

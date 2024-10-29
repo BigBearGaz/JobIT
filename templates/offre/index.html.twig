@@ -23,11 +23,15 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>Lieu :</strong> {{ offre.Lieu }}</li>
                                 <li class="list-group-item"><strong>Type de contrat</strong> {{ offre.typeContrat.nom }}</li>
+                                <li class="list-group-item"><strong>Publié par :</strong> {{ offre.auteur.nom }}</li>
+                                
                                 {% if offre.typeContrat.nom != 'CDI' %}
                                     <li class="list-group-item"><strong>Durée</strong> {{ offre.duree }}</li>
                                 {% endif %}
-                    
-                                <li class="list-group-item"><strong>Publié le :</strong> {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }} par {{ offre.auteur.nom }}</li>
+                                <li class="list-group-item"><strong>Publié le :</strong> {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</li>
+                                {% if offre.datePublication != offre.dateModification %}      
+                                    <li class="list-group-item"><strong>Modifié le :</strong> {{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</li>
+                                {% endif %}
                             </ul>
                             <div class="card-footer text-center">
                                 <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
