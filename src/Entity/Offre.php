@@ -51,8 +51,12 @@ class Offre
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'offre')]
     private Collection $users;
 
-    #[ORM\Column]
-    private ?int $auteur = null;
+    #[ORM\ManyToOne(inversedBy: 'offres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $Auteur = null;
+
+/*     #[ORM\Column]
+    private ?int $auteur = null; */
 
     public function __construct()
     {
@@ -180,7 +184,7 @@ class Offre
         return $this->users;
     }
 
-    public function addUser(User $user): static
+    /* public function addUser(User $user): static
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
@@ -200,9 +204,9 @@ class Offre
         }
 
         return $this;
-    }
+    } */
 
-    public function getAuteur(): ?int
+/*     public function getAuteur(): ?int
     {
         return $this->auteur;
     }
@@ -212,5 +216,17 @@ class Offre
         $this->auteur = $auteur;
 
         return $this;
-    }
+    } */
+
+public function getAuteur(): ?User
+{
+    return $this->Auteur;
+}
+
+public function setAuteur(?User $Auteur): static
+{
+    $this->Auteur = $Auteur;
+
+    return $this;
+}
 }

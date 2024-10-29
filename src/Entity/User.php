@@ -54,8 +54,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Offre $offre = null;
+/*     #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Offre $offre = null; */
 
     /**
      * @var Collection<int, Offre>
@@ -66,10 +66,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Statut $statut = null;
 
+    /**
+     * @var Collection<int, Offre>
+     */
+    #[ORM\OneToMany(targetEntity: Offre::class, mappedBy: 'Auteur')]
+    private Collection $offres;
+
 
     public function __construct()
     {
         $this->Offre_user = new ArrayCollection();
+        $this->offres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,7 +226,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getOffre(): ?Offre
+/*     public function getOffre(): ?Offre
     {
         return $this->offre;
     }
@@ -229,7 +236,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->offre = $offre;
 
         return $this;
-    }
+    } */
 
     /**
      * @return Collection<int, Offre>
@@ -263,6 +270,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStatut(?Statut $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offre>
+     */
+    public function getOffres(): Collection
+    {
+        return $this->offres;
+    }
+
+    public function addOffre(Offre $offre): static
+    {
+        if (!$this->offres->contains($offre)) {
+            $this->offres->add($offre);
+            $offre->setAuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffre(Offre $offre): static
+    {
+        if ($this->offres->removeElement($offre)) {
+            // set the owning side to null (unless already changed)
+            if ($offre->getAuteur() === $this) {
+                $offre->setAuteur(null);
+            }
+        }
 
         return $this;
     }

@@ -20,12 +20,12 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Lieu :</strong> {{ annonce.Lieu }}</li>
-                        <li class="list-group-item"><strong>Durée :</strong> {{ annonce.auteur }}</li>
+                        <li class="list-group-item"><strong>Durée :</strong> {{ annonce.auteur.nom }}</li>
                         <li class="list-group-item"><strong>Publié le :</strong> {{ annonce.datePublication ? annonce.datePublication|date('d-m-Y') : 'N/A' }}</li>
                     </ul>
                     <div class="card-footer text-center">
                         <a href="{{ path('app_offre_show', {'id': annonce.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
-                        {% if annonce.auteur ==  userId %}
+                        {% if annonce.auteur ==  app.user %}
                         <a href="{{ path('app_offre_edit', {'id': annonce.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
                         {% endif %}
                     </div>
@@ -38,10 +38,6 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
-
-    <div class="mt-4">
-        <a href="{{ path('app_offre_new') }}" class="btn btn-success">Créer une nouvelle offre</a>
     </div>
 </div>
 {% endblock %}

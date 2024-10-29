@@ -115,7 +115,7 @@ public function Asc(OffreRepository $offreRepository): Response
                 $offre->setLogo($logo);
             }
 
-            $offre->setAuteur($this->getUser()->getId());
+            $offre->setAuteur($this->getUser());
             $offre->setDatePublication(new \DateTime());
             $offre->setDateModification(new \DateTime());
             $entityManager->persist($offre);
@@ -133,18 +133,8 @@ public function Asc(OffreRepository $offreRepository): Response
     #[Route('/show/{id}', name: 'app_offre_show', methods: ['GET'])]
     public function show(Offre $offre): Response
     {
-        $nomAuteur = $this->getUser()->getNom();
-        if ($this->getUser())
-        {
-            $userId = ($this->getUser()->getId());
-        }
-        else {
-            $userId=0;
-        }
         return $this->render('offre/show.html.twig', [
             'offre' => $offre,
-            'userId' => $userId,
-            'nomAuteur' => $nomAuteur
         ]);
     }
 
@@ -219,17 +209,8 @@ public function Asc(OffreRepository $offreRepository): Response
         $nomCategorie = $cr->find($id)->getNom();
         $annonces = $categories->findBy(['category' => $id]);
 
-        if ($this->getUser())
-        {
-           $userId = ($this->getUser()->getId());
-        }
-        else {
-            $userId=0;
-        }
-
         return $this->render('offre/annonces.html.twig', [
             'annonces' => $annonces,
-            'userId' => $userId,
             'nomCategorie' => $nomCategorie
         ]);
     }

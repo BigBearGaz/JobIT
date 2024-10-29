@@ -8,35 +8,38 @@
 
 <div class="container mt-4">
     <h1 class="mb-4">Liste des Offres</h1>
-
-        <a class="btn btn-primary" href="/dateDesc" >Décroissant </a>
-        <a class="btn btn-primary" href="/dateAsc" >Chocapik</a>
-
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <p>Trier par date 
+        <a class="btn btn-secondary btn-sm" href="/dateDesc" >Décroissantes </a>
+        <a class="btn btn-secondary btn-sm" href="/dateAsc" >Croissantes</a>
+        </p>
+    <div>
         {% for offre in offres %}
-            <div class="col">
-                <div class="card h-100">
-                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="card-img-top" alt="{{ offre.titre }}" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ offre.titre }}</h5>
+                <div class="row row-cols-1 row-cols-md-3 g-4 p-2 align-items-center">
+                    <div class="col-8">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ offre.titre }}</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Lieu :</strong> {{ offre.Lieu }}</li>
+                                <li class="list-group-item"><strong>Type de contrat</strong> {{ offre.typeContrat.nom }}</li>
+                                {% if offre.typeContrat.nom != 'CDI' %}
+                                    <li class="list-group-item"><strong>Durée</strong> {{ offre.duree }}</li>
+                                {% endif %}
+                    
+                                <li class="list-group-item"><strong>Publié le :</strong> {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }} par {{ offre.auteur.nom }}</li>
+                            </ul>
+                            <div class="card-footer text-center">
+                                <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
+                                {% if offre.auteur.id ==  userId %}
+                                <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><strong>Lieu :</strong> {{ offre.Lieu }}</li>
-                        <li class="list-group-item"><strong>Type de contrat</strong> {{ offre.typeContrat.nom }}</li>
-                        {% if offre.typeContrat.nom != 'CDI' %}
-                            <li class="list-group-item"><strong>Durée</strong> {{ offre.duree }}</li>
-                        {% endif %}
-                        
-                        <li class="list-group-item"><strong>Publié le :</strong> {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</li>
-                    </ul>
-                    <div class="card-footer text-center">
-                        <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
-                        {% if offre.auteur ==  userId %}
-                        <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
-                        {% endif %}
-                    </div>
+                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="col-4" alt="{{ offre.titre }}" style="height: 200px; object-fit: cover;">
+
                 </div>
-            </div>
         {% else %}
             <div class="col-12">
                 <div class="alert alert-info" role="alert">

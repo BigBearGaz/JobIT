@@ -25,6 +25,10 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('statut', EntityType::class, [
+                'class' => Statut::class,
+                'choice_label' => 'nom',
+            ])
             ->add('nom')
             ->add('prenom')
             ->add('email')
@@ -56,10 +60,6 @@ class UserType extends AbstractType
                         'message' => 'La date de naissance ne peut pas être dans le futur.',
                     ]),
                 ],
-            ])
-            ->add('statut', EntityType::class, [
-                'class' => Statut::class,
-                'choice_label' => 'nom',
             ])
             ->add('Adresse')
             ->add('tel', TelType::class, [

@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">Job IT</a>
     {% if app.user %}
     <p>{{ app.user.prenom }} {{ app.user.nom }}</p>
     {% endif %}
     
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -39,7 +39,7 @@
           </ul>
         </li>
         {% if app.user %}
-          {% if app.user.statut == '2' or is_granted('ROLE_ADMIN') %}
+          {% if app.user.statut.id == '2' or is_granted('ROLE_ADMIN') %}
           <li class="nav-item">
             <a href="{{ path('app_offre_new') }}" class="btn btn-success">Créer une nouvelle offre</a>
           </li>

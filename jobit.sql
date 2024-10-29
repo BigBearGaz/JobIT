@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : lun. 28 oct. 2024 à 14:55
+-- Généré le : mar. 29 oct. 2024 à 07:05
 -- Version du serveur : 8.0.35
 -- Version de PHP : 8.3.9
 
@@ -37,9 +37,10 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `nom`) VALUES
-(1, 'Plomberie'),
-(2, 'Agriculture'),
-(3, 'Boulangerie');
+(1, 'Élevage'),
+(2, 'Plomberie'),
+(3, 'Maçonnerie'),
+(4, 'Manutention');
 
 -- --------------------------------------------------------
 
@@ -69,11 +70,7 @@ CREATE TABLE `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20241023062458', '2024-10-23 14:14:23', 27),
-('DoctrineMigrations\\Version20241023063155', '2024-10-23 14:14:23', 33),
-('DoctrineMigrations\\Version20241023063831', '2024-10-23 14:14:23', 22),
-('DoctrineMigrations\\Version20241023065347', '2024-10-23 14:14:23', 24),
-('DoctrineMigrations\\Version20241024195812', '2024-10-24 19:58:23', 66);
+('DoctrineMigrations\\Version20241028185156', '2024-10-28 18:52:02', 106);
 
 -- --------------------------------------------------------
 
@@ -119,23 +116,23 @@ CREATE TABLE `offre` (
   `id` int NOT NULL,
   `type_contrat_id` int NOT NULL,
   `category_id` int NOT NULL,
+  `auteur_id` int NOT NULL,
   `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_publication` date NOT NULL,
   `date_modification` date NOT NULL,
   `lieu` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `duree` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `auteur` int NOT NULL
+  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `offre`
 --
 
-INSERT INTO `offre` (`id`, `type_contrat_id`, `category_id`, `titre`, `description`, `date_publication`, `date_modification`, `lieu`, `duree`, `logo`, `auteur`) VALUES
-(3, 2, 1, 'Emploi de merde', 'Payé au lance pierre pour une charge de travail démesurée.', '2024-10-28', '2024-10-28', 'Un peu loin', NULL, 'logo2-671f802b2673c.jpg', 1),
-(4, 2, 2, 'Test Logo', 'Ca va pas me casser les nouilles !', '2024-10-28', '2024-10-28', 'Là', NULL, 'admin.jpg', 1);
+INSERT INTO `offre` (`id`, `type_contrat_id`, `category_id`, `auteur_id`, `titre`, `description`, `date_publication`, `date_modification`, `lieu`, `duree`, `logo`) VALUES
+(1, 1, 4, 1, 'Emploi non salarié', 'C\'est comme un travail mais tu ne touches pas d\'argent.', '2024-10-28', '2024-10-28', 'Unvillage', NULL, 'admin-671fea0f61df3.jpg'),
+(2, 2, 1, 2, 'Président de la République', 'Retraite à vie\r\nSalaire intéressant', '2024-10-28', '2024-10-28', 'Paris', '5 ans', 'logo-671ff3aed9560.jpg');
 
 -- --------------------------------------------------------
 
@@ -172,9 +169,9 @@ CREATE TABLE `type_contrat` (
 --
 
 INSERT INTO `type_contrat` (`id`, `nom`) VALUES
-(1, 'CDD'),
-(2, 'CDI'),
-(3, 'Intérimaire');
+(1, 'CDI'),
+(2, 'CDD'),
+(3, 'Interim');
 
 -- --------------------------------------------------------
 
@@ -184,7 +181,7 @@ INSERT INTO `type_contrat` (`id`, `nom`) VALUES
 
 CREATE TABLE `user` (
   `id` int NOT NULL,
-  `offre_id` int DEFAULT NULL,
+  `statut_id` int DEFAULT NULL,
   `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` json NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -193,18 +190,16 @@ CREATE TABLE `user` (
   `date_naissance` date NOT NULL,
   `adresse` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tel` int NOT NULL,
-  `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `statut_id` int DEFAULT NULL
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `offre_id`, `email`, `roles`, `password`, `nom`, `prenom`, `date_naissance`, `adresse`, `tel`, `photo`, `statut_id`) VALUES
-(1, NULL, 'john@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$bYVR27NSkp78kqu4rAbal.MLQFKVXIY5RNDqXAXq.o70MXtpWtHKK', 'Doe', 'John', '2024-10-01', 'Ici', 123, 'admin.jpg', 1),
-(8, NULL, 'bob@gmail.com', '[\"ROLE_USER\"]', '$2y$13$ftfBko.n.WzCAim2eFIBEeuuf4O5irT3RX70sz.IfVAz86IhUE1/C', 'Squarepants', 'Sponge Bob', '2024-10-04', 'Bikini Bottom', 263756489, '7-671f7f516a675.jpg', 1),
-(9, NULL, 'jean@gmail.com', '[\"ROLE_USER\"]', '$2y$13$Oi7qQVxWo.nsSZXVI6ejR.ha5lmeFc7EKpMANgtPzJCHefzDT.gMu', 'Valjean', 'Jean', '2024-10-01', 'La ville', 678245367, '62-671f8289ac2ae.jpg', 2);
+INSERT INTO `user` (`id`, `statut_id`, `email`, `roles`, `password`, `nom`, `prenom`, `date_naissance`, `adresse`, `tel`, `photo`) VALUES
+(1, 1, 'john@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$TrN0eUxYLeLZwXTvUjb7e.2jSuSqUHk1KL.W8F5LcXToncHq1F.52', 'Doe', 'John', '2024-10-04', 'Maison de John', 626768253, 'admin-671fea0f61df3.jpg'),
+(2, 2, 'bob@gmail.com', '[\"ROLE_USER\"]', '$2y$13$QAZI7pTFj0i2MR7JTQoo9.Z0TfOwlH/5kZc1uHP/xj.REkZ8HZsXS', 'Squarepants', 'Sponge Bob', '2024-10-09', 'Bikini Bottom', 203987621, '62-671ff1f3c597e.jpg');
 
 -- --------------------------------------------------------
 
@@ -262,7 +257,8 @@ ALTER TABLE `messenger_messages`
 ALTER TABLE `offre`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_AF86866F520D03A` (`type_contrat_id`),
-  ADD KEY `IDX_AF86866F12469DE2` (`category_id`);
+  ADD KEY `IDX_AF86866F12469DE2` (`category_id`),
+  ADD KEY `IDX_AF86866F60BB6FE6` (`auteur_id`);
 
 --
 -- Index pour la table `statut`
@@ -282,7 +278,6 @@ ALTER TABLE `type_contrat`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `UNIQ_IDENTIFIER_EMAIL` (`email`),
-  ADD KEY `IDX_8D93D6494CC8505A` (`offre_id`),
   ADD KEY `IDX_8D93D649F6203804` (`statut_id`);
 
 --
@@ -301,7 +296,7 @@ ALTER TABLE `user_offre`
 -- AUTO_INCREMENT pour la table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `entreprise`
@@ -319,7 +314,7 @@ ALTER TABLE `messenger_messages`
 -- AUTO_INCREMENT pour la table `offre`
 --
 ALTER TABLE `offre`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `statut`
@@ -337,7 +332,7 @@ ALTER TABLE `type_contrat`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Contraintes pour les tables déchargées
@@ -355,13 +350,13 @@ ALTER TABLE `category_entreprise`
 --
 ALTER TABLE `offre`
   ADD CONSTRAINT `FK_AF86866F12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
-  ADD CONSTRAINT `FK_AF86866F520D03A` FOREIGN KEY (`type_contrat_id`) REFERENCES `type_contrat` (`id`);
+  ADD CONSTRAINT `FK_AF86866F520D03A` FOREIGN KEY (`type_contrat_id`) REFERENCES `type_contrat` (`id`),
+  ADD CONSTRAINT `FK_AF86866F60BB6FE6` FOREIGN KEY (`auteur_id`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `FK_8D93D6494CC8505A` FOREIGN KEY (`offre_id`) REFERENCES `offre` (`id`),
   ADD CONSTRAINT `FK_8D93D649F6203804` FOREIGN KEY (`statut_id`) REFERENCES `statut` (`id`);
 
 --

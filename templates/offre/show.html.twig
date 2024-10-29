@@ -18,7 +18,9 @@
                             <h2>{{ offre.titre }}</h2>
                             <p><strong>Lieu :</strong> {{ offre.Lieu }}</p>
                             <p><strong>Catégorie :</strong> {{ offre.Category.nom }}</p>
+                            {% if offre.duree %}
                             <p><strong>Durée :</strong> {{ offre.duree }}</p>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -30,17 +32,19 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <th>ID</th>
-                                <td>{{ nomAuteur }}</td>
+                                <th>Publié par</th>
+                                <td>{{ offre.auteur.nom }}</td>
                             </tr>
                             <tr>
                                 <th>Date de publication</th>
                                 <td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</td>
                             </tr>
-                            <tr>
-                                <th>Date de modification</th>
-                                <td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'Non définie' }}</td>
-                            </tr>
+                            {% if offre.datePublication !=  offre.dateModification%}
+                                <tr>
+                                    <th>Date de modification</th>
+                                    <td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'Non définie' }}</td>
+                                </tr>
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -48,7 +52,7 @@
 
             <div class="mt-3">
                 <a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour à la liste</a>
-                {% if offre.auteur ==  userId %}
+                {% if offre.auteur.id ==  app.user.id %}
                 <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-primary">Modifier</a>
                 {{ include('offre/_delete_form.html.twig') }}
                 {% endif %}
