@@ -18,7 +18,12 @@
                     <div class="col-8">
                         <div class="card h-100">
                             <div class="card-body">
+                                <div class="d-flex justify-content-between">
                                 <h5 class="card-title">{{ offre.titre }}</h5>
+                                {% if app.user and offre.users.contains(app.user) %}
+                                    <img src="/uploads/signet.png" alt="" class="icone">
+                                {% endif %}
+                                </div>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item"><strong>Lieu :</strong> {{ offre.Lieu }}</li>
@@ -35,6 +40,8 @@
                             </ul>
                             <div class="card-footer text-center">
                                 <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
+                                
+
                                 {% if offre.auteur.id ==  userId %}
                                 <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
                                 {% endif %}

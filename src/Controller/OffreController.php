@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Offre;
 use App\Entity\TypeContrat;
+use App\Entity\User;
 use App\Form\OffreType;
 use App\Repository\CategoryRepository;
 use App\Repository\OffreRepository;
@@ -131,10 +132,14 @@ public function Asc(OffreRepository $offreRepository): Response
     }
 
     #[Route('/show/{id}', name: 'app_offre_show', methods: ['GET'])]
-    public function show(Offre $offre): Response
-    {
+    public function show(Offre $offre, OffreRepository $repository, $id): Response
+    {   
+        $selectedOffre = $repository->find($id);
+        $users = $selectedOffre->getUsers();
+        // dd($selectedOffre);
         return $this->render('offre/show.html.twig', [
             'offre' => $offre,
+            'users' => $users,
         ]);
     }
 
@@ -213,5 +218,39 @@ public function Asc(OffreRepository $offreRepository): Response
             'annonces' => $annonces,
             'nomCategorie' => $nomCategorie
         ]);
+    }
+
+    #[Route('/favoris/{id}', name: 'app_add_favori', methods: ['GET', 'POST'])]
+    public function addFavori(Offre $offre, EntityManagerInterface $entityManager): Response
+    {   
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour ajouter un favori.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($offre->getUsers()->contains($user)) {
+            $offre->removeUser($user);
+            $entityManager->persist($offre);
+            $entityManager->flush();
+            $this->addFlash('info', 'Cette offre est déjà dans vos favoris.');
+        } else {
+            $offre->addUser($user);
+            $entityManager->persist($offre);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'offre a été ajoutée à vos favoris.');
+        }
+
+        return $this->redirectToRoute('app_offre_show', ['id' => $offre->getId()]);
+    }
+
+    #[Route('/favoris', name: 'app_favori', methods: ['GET', 'POST'])]
+    public function mesFavoris(OffreRepository $offreRepository): Response
+    {   
+        $user= $this->getUser();
+        $favorisOffre = $user->getTara();
+        return $this->render('offre/favoris.html.twig',['favorisOffre'=> $favorisOffre]);
+
     }
 }

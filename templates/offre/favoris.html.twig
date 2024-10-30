@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Favoris{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Mes Favoris</h1>
+    
+    {% if favorisOffre is empty %}
+        <div class="alert alert-info">Vous n'avez pas encore de favoris.</div>
+    {% else %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for favori in favorisOffre %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ favori.titre }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ favori.Lieu }}</h6>
+                            <p class="card-text">{{ favori.description|slice(0, 100) ~ '...' }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="fas fa-calendar-alt me-2"></i>Publié le : {{ favori.datePublication|date('d/m/Y') }}</li>
+                            {% if favori.dateModification %}
+                                <li class="list-group-item"><i class="fas fa-edit me-2"></i>Modifié le : {{ favori.dateModification|date('d/m/Y') }}</li>
+                            {% endif %}
+                           
+                        </ul>
+                        <div class="card-footer">
+                            <a href="{{ path('app_offre_show', {'id': favori.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
+                            <a href="#" class="btn btn-danger btn-sm float-end">Retirer des favoris</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -44,24 +44,23 @@ class Offre
 
     #[ORM\Column(length: 255)]
     private ?string $logo = null;
-
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'offre')]
-    private Collection $users;
-
     #[ORM\ManyToOne(inversedBy: 'offres')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $Auteur = null;
 
-/*     #[ORM\Column]
-    private ?int $auteur = null; */
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'tara')]
+    private Collection $users;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
     }
+
+/*     #[ORM\Column]
+    private ?int $auteur = null; */
 
     public function getId(): ?int
     {
@@ -176,36 +175,6 @@ class Offre
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    /* public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setOffre($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getOffre() === $this) {
-                $user->setOffre(null);
-            }
-        }
-
-        return $this;
-    } */
-
 /*     public function getAuteur(): ?int
     {
         return $this->auteur;
@@ -226,6 +195,33 @@ public function getAuteur(): ?User
 public function setAuteur(?User $Auteur): static
 {
     $this->Auteur = $Auteur;
+
+    return $this;
+}
+
+/**
+ * @return Collection<int, User>
+ */
+public function getUsers(): Collection
+{
+    return $this->users;
+}
+
+public function addUser(User $user): static
+{
+    if (!$this->users->contains($user)) {
+        $this->users->add($user);
+        $user->addTara($this);
+    }
+
+    return $this;
+}
+
+public function removeUser(User $user): static
+{
+    if ($this->users->removeElement($user)) {
+        $user->removeTara($this);
+    }
 
     return $this;
 }

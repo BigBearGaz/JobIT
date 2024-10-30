@@ -57,12 +57,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 /*     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Offre $offre = null; */
 
-    /**
-     * @var Collection<int, Offre>
-     */
-    #[ORM\ManyToMany(targetEntity: Offre::class, inversedBy: 'users')]
-    private Collection $Offre_user;
-
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Statut $statut = null;
 
@@ -72,11 +66,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Offre::class, mappedBy: 'Auteur')]
     private Collection $offres;
 
+    /**
+     * @var Collection<int, Offre>
+     */
+    #[ORM\ManyToMany(targetEntity: Offre::class, inversedBy: 'users')]
+    private Collection $tara;
+
 
     public function __construct()
     {
-        $this->Offre_user = new ArrayCollection();
         $this->offres = new ArrayCollection();
+        $this->tara = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -238,30 +238,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     } */
 
-    /**
-     * @return Collection<int, Offre>
-     */
-    public function getOffreUser(): Collection
-    {
-        return $this->Offre_user;
-    }
-
-    public function addOffreUser(Offre $offreUser): static
-    {
-        if (!$this->Offre_user->contains($offreUser)) {
-            $this->Offre_user->add($offreUser);
-        }
-
-        return $this;
-    }
-
-    public function removeOffreUser(Offre $offreUser): static
-    {
-        $this->Offre_user->removeElement($offreUser);
-
-        return $this;
-    }
-
     public function getStatut(): ?Statut
     {
         return $this->statut;
@@ -300,6 +276,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $offre->setAuteur(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Offre>
+     */
+    public function getTara(): Collection
+    {
+        return $this->tara;
+    }
+
+    public function addTara(Offre $tara): static
+    {
+        if (!$this->tara->contains($tara)) {
+            $this->tara->add($tara);
+        }
+
+        return $this;
+    }
+
+    public function removeTara(Offre $tara): static
+    {
+        $this->tara->removeElement($tara);
 
         return $this;
     }
