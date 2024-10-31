@@ -253,4 +253,15 @@ public function Asc(OffreRepository $offreRepository): Response
         return $this->render('offre/favoris.html.twig',['favorisOffre'=> $favorisOffre]);
 
     }
+
+    public function search(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $searchTerm = $request->query->get('q');
+    $offres = $entityManager->getRepository(Offre::class)->searchByTerm($searchTerm);
+
+    return $this->render('offre/index.html.twig', [
+        'offres' => $offres,
+        'searchTerm' => $searchTerm
+    ]);
+}
 }

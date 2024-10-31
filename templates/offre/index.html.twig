@@ -2,57 +2,144 @@
 
 {% block title %}Liste des Offres{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: #333;
+    min-height: 100vh;
+}
+
+.container {
+    padding-top: 50px;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+h1:hover {
+    transform: scale(1.05);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.card {
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.offer-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+    color: #3498db;
+    transition: color 0.3s ease;
+}
+
+.card:hover .card-title {
+    color: #2980b9;
+}
+
+.card-text {
+    margin-bottom: 10px;
+}
+
+.btn-custom {
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background-color: #95a5a6;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+</style>
+{% endblock %}
+
 {% block body %}
-
-
-
-<div class="container mt-4">
+<div class="container mt-5">
     <h1 class="mb-4">Liste des Offres</h1>
-        <p>Trier par date 
-        <a class="btn btn-secondary btn-sm" href="/dateDesc" >Décroissantes </a>
-        <a class="btn btn-secondary btn-sm" href="/dateAsc" >Croissantes</a>
-        </p>
-    <div>
+    
+    <div class="d-flex justify-content-center mb-4 fade-in" style="animation-delay: 0.2s;">
+        <p class="me-3 align-self-center mb-0">Trier par date :</p>
+        <a class="btn btn-outline-primary btn-sm me-2 btn-custom" href="/dateDesc">Décroissantes</a>
+        <a class="btn btn-outline-primary btn-sm btn-custom" href="/dateAsc">Croissantes</a>
+    </div>
+    
+    <div class="row">
         {% for offre in offres %}
-                <div class="row row-cols-1 row-cols-md-3 g-4 p-2 align-items-center">
-                    <div class="col-8">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                <h5 class="card-title">{{ offre.titre }}</h5>
-                                {% if app.user and offre.users.contains(app.user) %}
-                                    <img src="/uploads/signet.png" alt="" class="icone">
-                                {% endif %}
-                                </div>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Lieu :</strong> {{ offre.Lieu }}</li>
-                                <li class="list-group-item"><strong>Type de contrat</strong> {{ offre.typeContrat.nom }}</li>
-                                <li class="list-group-item"><strong>Publié par :</strong> {{ offre.auteur.nom }}</li>
-                                
-                                {% if offre.typeContrat.nom != 'CDI' %}
-                                    <li class="list-group-item"><strong>Durée</strong> {{ offre.duree }}</li>
-                                {% endif %}
-                                <li class="list-group-item"><strong>Publié le :</strong> {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</li>
-                                {% if offre.datePublication != offre.dateModification %}      
-                                    <li class="list-group-item"><strong>Modifié le :</strong> {{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</li>
-                                {% endif %}
-                            </ul>
-                            <div class="card-footer text-center">
-                                <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>
-                                
-
-                                {% if offre.auteur.id ==  userId %}
-                                <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
-                                {% endif %}
-                            </div>
-                        </div>
+            <div class="col-md-6 mb-4 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                <div class="card h-100">
+                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="img-fluid offer-image" alt="{{ offre.titre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ offre.titre }}</h5>
+                        <p class="card-text"><small class="text-muted">{{ offre.Lieu }} | {{ offre.typeContrat.nom }}</small></p>
+                        <p class="card-text">Publié par : {{ offre.auteur.nom }}</p>
+                        {% if offre.typeContrat.nom != 'CDI' %}
+                            <p class="card-text">Durée : {{ offre.duree }}</p>
+                        {% endif %}
+                        <p class="card-text"><small class="text-muted">Publié le : {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</small></p>
+                        {% if offre.datePublication != offre.dateModification %}      
+                            <p class="card-text"><small class="text-muted">Modifié le : {{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</small></p>
+                        {% endif %}
                     </div>
-                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="col-4" alt="{{ offre.titre }}" style="height: 200px; object-fit: cover;">
-
+                    <div class="card-footer text-center bg-transparent">
+                        <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-custom btn-sm me-2">Voir détails</a>
+                        {% if offre.auteur.id == app.user.id %}
+                            <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                        {% endif %}
+                    </div>
                 </div>
+            </div>
         {% else %}
-            <div class="col-12">
+            <div class="col-12 fade-in">
                 <div class="alert alert-info" role="alert">
                     Aucune offre trouvée.
                 </div>
@@ -60,4 +147,25 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach(element => {
+        element.style.opacity = '0';
+    });
+
+    function checkScroll() {
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            if (elementTop < window.innerHeight) {
+                element.style.animationPlayState = 'running';
+            }
+        });
+    }
+
+    window.addEventListener('scroll', checkScroll);
+    checkScroll();
+});
+</script>
 {% endblock %}

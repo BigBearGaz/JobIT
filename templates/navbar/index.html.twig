@@ -1,71 +1,149 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Job IT</a>
-    {% if app.user %}
-    <p>{{ app.user.prenom }} {{ app.user.nom }}</p>
-    {% endif %}
-    
-    <button class="navbar-toggler bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Accueil</a>
-        </li>
-        {% if not app.user %}
-        <li class="nav-item">
-          <a class="nav-link" href="/register">Inscription</a>
-        </li> 
-        <li class="nav-item">
-          <a class="nav-link" href="/login">Connexion</a>
-        </li>
-        {% endif %}
-        {% if app.user %}
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Déconnexion</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/user">Mon Profil</a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" href="/favoris">Mes favoris</a>
-        </li>
-        {% endif %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Catégories
-          </a>
-          <ul class="dropdown-menu">
-            {% for categorie in categories.getAllCategories() %}
-              
-              <li><a class="dropdown-item" href="/offre/annonces/{{ categorie.id }}">{{ categorie.nom }}</a></li>
-              
-            {% endfor %}
-          </ul>
-        </li>
-        {% if app.user %}
-          {% if app.user.statut.id == '2' or is_granted('ROLE_ADMIN') %}
-          <li class="nav-item">
-            <a href="{{ path('app_offre_new') }}" class="btn btn-success">Créer une nouvelle offre</a>
-          </li>
-          {% endif %}
-        {% endif %}
-        {% if is_granted('ROLE_ADMIN') %}
-          <li class="nav-item">
-            <a href="/admin" class="btn btn-warning">ADMIN</a>
-          </li>
-        {% endif %}
-        
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .navbar-brand:hover {
+            color: #007bff;
+        }
+        .nav-link {
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: #007bff;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: #007bff;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .search-form {
+            position: relative;
+        }
+        .search-form input {
+            border: none;
+            background-color: #f8f9fa;
+            padding: 10px 40px 10px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .search-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        .search-form button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">Job IT</a>
+            {% if app.user %}
+                <p class="mb-0 mx-2">{{ app.user.prenom }} {{ app.user.nom }}</p>
+            {% endif %}
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                    </li>
+                    {% if not app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Inscription</a>
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Connexion</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Déconnexion</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user">Mon Profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/favoris">Mes favoris</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Catégories
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for categorie in categories.getAllCategories() %}
+                                <li><a class="dropdown-item" href="/offre/annonces/{{ categorie.id }}">{{ categorie.nom }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% if app.user %}
+                        {% if app.user.statut.id == '2' or is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a href="{{ path('app_offre_new') }}" class="btn btn-success">Créer une nouvelle offre</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a href="/admin" class="btn btn-warning">ADMIN</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form class="search-form d-flex" role="search" action="{{ path('search_offres') }}" method="GET">
+                    <input name="q" class="form-control me-2" type="text" placeholder="Rechercher" aria-label="Search id="searchInput">
+                    <button class="btn" type="submit">🔍</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block body %}
+            <!-- Le contenu spécifique de chaque page sera inséré ici -->
+        {% endblock %}
     </div>
-  </div>
-</nav>
 
 
+</body>
 
-
+</html>
