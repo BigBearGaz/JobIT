@@ -88,6 +88,9 @@ public function Asc(OffreRepository $offreRepository): Response
         #[Autowire('%kernel.project_dir%/public/uploads')] string $brochuresDirectory
     ): Response
     {
+        if (!$this->getUser()){
+            return $this->redirectToRoute('app_login'); 
+        }
         $offre = new Offre();
         $form = $this->createForm(OffreType::class, $offre);
         $form->handleRequest($request);
@@ -198,6 +201,9 @@ public function Asc(OffreRepository $offreRepository): Response
     #[Route('/delete/{id}', name: 'app_offre_delete', methods: ['POST'])]
     public function delete(Request $request, Offre $offre, EntityManagerInterface $entityManager): Response
     {
+        if ($offre->getAuteur()->getId() !== $this->getUser()->getId()){
+            return $this->redirectToRoute('app_lock'); 
+        }
         if ($this->isCsrfTokenValid('delete'.$offre->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($offre);
             $entityManager->flush();
@@ -224,12 +230,15 @@ public function Asc(OffreRepository $offreRepository): Response
     public function addFavori(Offre $offre, EntityManagerInterface $entityManager): Response
     {   
         $user = $this->getUser();
-
+        
         if (!$user) {
             $this->addFlash('error', 'Vous devez être connecté pour ajouter un favori.');
             return $this->redirectToRoute('app_login');
         }
-
+        
+        if ($offre->getAuteur()->getId() !== $this->getUser()->getId()){
+            return $this->redirectToRoute('app_lock'); 
+        }
         if ($offre->getUsers()->contains($user)) {
             $offre->removeUser($user);
             $entityManager->persist($offre);
@@ -249,6 +258,10 @@ public function Asc(OffreRepository $offreRepository): Response
     public function mesFavoris(OffreRepository $offreRepository): Response
     {   
         $user= $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté.');
+            return $this->redirectToRoute('app_login');
+        }
         $favorisOffre = $user->getTara();
         return $this->render('offre/favoris.html.twig',['favorisOffre'=> $favorisOffre]);
 

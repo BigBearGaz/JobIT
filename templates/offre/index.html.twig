@@ -23,12 +23,6 @@ h1 {
     text-align: center;
     margin-bottom: 30px;
     font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-h1:hover {
-    transform: scale(1.05);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 .card {
@@ -37,6 +31,7 @@ h1:hover {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    height: 100%;
 }
 
 .card:hover {
@@ -47,20 +42,18 @@ h1:hover {
 .offer-image {
     height: 200px;
     object-fit: cover;
+    width: 100%;
 }
 
 .card-body {
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .card-title {
     font-weight: bold;
     color: #3498db;
-    transition: color 0.3s ease;
-}
-
-.card:hover .card-title {
-    color: #2980b9;
 }
 
 .card-text {
@@ -71,8 +64,8 @@ h1:hover {
     background-color: #3498db;
     border: none;
     color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
+    padding: 8px 16px;
+    border-radius: 20px;
     font-weight: bold;
     transition: all 0.3s ease;
 }
@@ -92,13 +85,13 @@ h1:hover {
     background-color: #7f8c8d;
 }
 
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
 }
 </style>
 {% endblock %}
@@ -108,33 +101,34 @@ h1:hover {
     <h1 class="mb-4">Liste des Offres</h1>
     
     <div class="d-flex justify-content-center mb-4 fade-in" style="animation-delay: 0.2s;">
-        <p class="me-3 align-self-center mb-0">Trier par date :</p>
-        <a class="btn btn-outline-primary btn-sm me-2 btn-custom" href="/dateDesc">Décroissantes</a>
-        <a class="btn btn-outline-primary btn-sm btn-custom" href="/dateAsc">Croissantes</a>
+        <a class="btn btn-outline-primary btn-sm me-2 btn-custom" href="/dateDesc">Trier par date décroissante</a>
+        <a class="btn btn-outline-primary btn-sm btn-custom" href="/dateAsc">Trier par date croissante</a>
     </div>
     
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for offre in offres %}
-            <div class="col-md-6 mb-4 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+            <div class="col fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
                 <div class="card h-100">
-                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="img-fluid offer-image" alt="{{ offre.titre }}">
-                    <div class="card-body">
+                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="offer-image" alt="{{ offre.titre }}">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ offre.titre }}</h5>
                         <p class="card-text"><small class="text-muted">{{ offre.Lieu }} | {{ offre.typeContrat.nom }}</small></p>
-                        <p class="card-text">Publié par : {{ offre.auteur.nom }}</p>
+                        {# <p class="card-text">Publié par :</p> #}
                         {% if offre.typeContrat.nom != 'CDI' %}
                             <p class="card-text">Durée : {{ offre.duree }}</p>
                         {% endif %}
-                        <p class="card-text"><small class="text-muted">Publié le : {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</small></p>
+                        <p class="card-text"><small class="text-muted">Publié le : {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }} par {{ offre.auteur.nom }} {{ offre.auteur.prenom }}</small></p>
                         {% if offre.datePublication != offre.dateModification %}      
                             <p class="card-text"><small class="text-muted">Modifié le : {{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</small></p>
                         {% endif %}
-                    </div>
-                    <div class="card-footer text-center bg-transparent">
-                        <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-custom btn-sm me-2">Voir détails</a>
-                        {% if offre.auteur.id == app.user.id %}
-                            <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
-                        {% endif %}
+                        <div class="mt-auto">
+                            <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-custom btn-sm me-2">Voir détails</a>
+                            {% if app.user %}
+                                {% if offre.auteur.id == app.user.id %}
+                                    <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
