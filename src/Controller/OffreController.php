@@ -220,8 +220,8 @@ public function Asc(OffreRepository $offreRepository): Response
         $nomCategorie = $cr->find($id)->getNom();
         $annonces = $categories->findBy(['category' => $id]);
 
-        return $this->render('offre/annonces.html.twig', [
-            'annonces' => $annonces,
+        return $this->render('offre/index.html.twig', [
+            'offres' => $annonces,
             'nomCategorie' => $nomCategorie
         ]);
     }
