@@ -28,6 +28,8 @@ class UserType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('email')
+            ->add('entreprise')
+
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
                 'constraints' => [

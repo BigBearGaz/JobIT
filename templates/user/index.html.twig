@@ -8,18 +8,19 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">Profil de {{ app.user.prenom }} {{ app.user.nom }}</h2>
+                    <h2 class="mb-0">Profil de {{ app.user.prenom }} {{ app.user.nom }} {{ app.user.entreprise }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <img src="{{ asset('uploads/' ~ app.user.photo) }}" 
-                                 class="img-fluid rounded" 
-                                 alt="Photo de {{ app.user.prenom }} {{ app.user.nom }}"
-                                 style="height: 200px; object-fit: cover; width: 100%;">
+                                class="img-fluid rounded" 
+                                alt="Photo de {{ app.user.prenom }} {{ app.user.nom }} {{ app.user.entreprise }}"
+                                style="height: 200px; object-fit: cover; width: 100%;">
                         </div>
                         <div class="col-md-8">
                             <ul class="list-group list-group-flush">
+                            {% if app.user.nom %}
                                 <li class="list-group-item">
                                     <strong>Nom :</strong> {{ app.user.nom }}
                                 </li>
@@ -27,10 +28,18 @@
                                     <strong>Prénom :</strong> {{ app.user.prenom }}
                                 </li>
                                 <li class="list-group-item">
-                                    <strong>Email :</strong> {{ app.user.email }}
+                                    <strong>Date de naissance :</strong> {{ app.user.dateNaissance|date('d/m/Y') }}
+                                </li>
+                            {% else %}
+                                <li class="list-group-item">
+                                    <strong>Entreprise :</strong> {{ app.user.entreprise }}
                                 </li>
                                 <li class="list-group-item">
-                                    <strong>Date de naissance :</strong> {{ app.user.dateNaissance|date('d/m/Y') }}
+                                    <strong>Site Web :</strong> {{ app.user.url }}
+                                </li>
+                            {% endif %}
+                                <li class="list-group-item">
+                                    <strong>Email :</strong> {{ app.user.email }}
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Adresse :</strong> {{ app.user.adresse }}

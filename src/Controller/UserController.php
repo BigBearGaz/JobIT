@@ -45,21 +45,20 @@ final class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-           
-            // $photoFile = $form->get('photo')->getData();
+            $photoFile = $form->get('photo')->getData();
             
-            // if ($photoFile) {
-            //     $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
-            //     $safeFilename = $slugger->slug($originalFilename);
-            //     $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photoFile->guessExtension();
     
-            //     try {
-            //         $photoFile->move($uploadsDirectory, $newFilename);
-            //         $user->setPhoto($newFilename);
-            //     } catch (FileException $e) {
-            //         $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de la photo.');
-            //     }
-            // }
+                try {
+                    $photoFile->move($uploadsDirectory, $newFilename);
+                    $user->setPhoto($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de la photo.');
+                }
+            }
             
             $entityManager->flush();
     

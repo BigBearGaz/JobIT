@@ -23,7 +23,7 @@
                             {% if favori.dateModification %}
                                 <li class="list-group-item"><i class="fas fa-edit me-2"></i>Modifié le : {{ favori.dateModification|date('d/m/Y') }}</li>
                             {% endif %}
-                           
+
                         </ul>
                         <div class="card-footer">
                             <a href="{{ path('app_offre_show', {'id': favori.id}) }}" class="btn btn-primary btn-sm">Voir détails</a>

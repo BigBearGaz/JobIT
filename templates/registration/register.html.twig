@@ -9,7 +9,11 @@
     
     {{ form_start(registrationForm) }}
         
-
+        {% if registrationForm.statut.vars.value == 'Recruteur' %}
+            <div>
+                {{ form_row(registrationForm.entreprise) }}
+            </div>
+        {% endif %}
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}

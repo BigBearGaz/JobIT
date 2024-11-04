@@ -236,9 +236,6 @@ public function Asc(OffreRepository $offreRepository): Response
             return $this->redirectToRoute('app_login');
         }
         
-        if ($offre->getAuteur()->getId() !== $this->getUser()->getId()){
-            return $this->redirectToRoute('app_lock'); 
-        }
         if ($offre->getUsers()->contains($user)) {
             $offre->removeUser($user);
             $entityManager->persist($offre);

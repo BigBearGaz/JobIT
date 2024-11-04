@@ -56,6 +56,19 @@ class Offre
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'tara')]
     private Collection $users;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $competences = null;
+
+    #[ORM\ManyToOne(inversedBy: 'offres')]
+    private ?Temps $temps = null;
+
+    #[ORM\ManyToOne(inversedBy: 'offres')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Distanciel $distanciel = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $salaire = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -227,4 +240,53 @@ public function removeUser(User $user): static
 
     return $this;
 }
+
+public function getCompetences(): ?string
+{
+    return $this->competences;
+}
+
+public function setCompetences(?string $competences): static
+{
+    $this->competences = $competences;
+
+    return $this;
+}
+
+public function getTemps(): ?Temps
+{
+    return $this->temps;
+}
+
+public function setTemps(?Temps $temps): static
+{
+    $this->temps = $temps;
+
+    return $this;
+}
+
+public function getDistanciel(): ?Distanciel
+{
+    return $this->distanciel;
+}
+
+public function setDistanciel(?Distanciel $distanciel): static
+{
+    $this->distanciel = $distanciel;
+
+    return $this;
+}
+
+public function getSalaire(): ?string
+{
+    return $this->salaire;
+}
+
+public function setSalaire(string $salaire): static
+{
+    $this->salaire = $salaire;
+
+    return $this;
+}
+
 }
