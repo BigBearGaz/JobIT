@@ -4,96 +4,7 @@
 
 {% block stylesheets %}
 {{ parent() }}
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    color: #333;
-    min-height: 100vh;
-}
-
-.container {
-    padding-top: 50px;
-}
-
-h1 {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
-.card {
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    height: 100%;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.offer-image {
-    height: 200px;
-    object-fit: cover;
-    width: 100%;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.card-title {
-    font-weight: bold;
-    color: #3498db;
-}
-
-.card-text {
-    margin-bottom: 10px;
-}
-
-.btn-custom {
-    background-color: #3498db;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.btn-custom:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.btn-secondary {
-    background-color: #95a5a6;
-    transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-    background-color: #7f8c8d;
-}
-
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-</style>
 {% endblock %}
 
 {% block body %}
@@ -109,7 +20,8 @@ h1 {
         {% for offre in offres %}
             <div class="col fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
                 <div class="card h-100">
-                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="offer-image" alt="{{ offre.titre }}">
+                <img src="{{ asset('uploads/' ~ offre.logo) }}" class="offer-image" alt="{{ offre.titre }}"
+     onerror="this.onerror=null; this.src='https://img.logoipsum.com/321.svg';">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ offre.titre }}</h5>
                         <p class="card-text"><small class="text-muted">{{ offre.Lieu }} | {{ offre.typeContrat.nom }}</small></p>
@@ -117,7 +29,7 @@ h1 {
                         {% if offre.typeContrat.nom != 'CDI' %}
                             <p class="card-text">Durée : {{ offre.duree }}</p>
                         {% endif %}
-                        <p class="card-text"><small class="text-muted">Publié le : {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }} par {{ offre.auteur.nom }} {{ offre.auteur.prenom }}</small></p>
+                        <p class="card-text"><small class="text-muted">Publié le : {{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }} par {{ offre.auteur.nom }} {{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</small></p>
                         {% if offre.datePublication != offre.dateModification %}      
                             <p class="card-text"><small class="text-muted">Modifié le : {{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</small></p>
                         {% endif %}

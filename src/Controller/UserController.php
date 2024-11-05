@@ -44,8 +44,7 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $photoFile = $form->get('photo')->getData();
+            $photoFile = $form->get('logo')->getData();
             
             if ($photoFile) {
                 $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -59,7 +58,6 @@ final class UserController extends AbstractController
                     $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de la photo.');
                 }
             }
-            
             $entityManager->flush();
     
             $this->addFlash('success', 'Votre profil a été mis à jour avec succès.');

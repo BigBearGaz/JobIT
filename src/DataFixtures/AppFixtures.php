@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
             /* $user->setDateNaissance($faker->dateTimeThisCentury()); */
             $user->setAdresse($faker->address);
             $user->setTel('0672853981');
-            $user->setPhoto($faker->imageUrl(200, 480));
+            $user->setPhoto('https://picsum.photos/100/150');
             $user->setStatut($statuts['Recruteur']);
             $manager->persist($user);
             $usersRecruteurs[] = $user;
@@ -152,7 +152,7 @@ class AppFixtures extends Fixture
                 $offre[$i]->setDateModification($datePublication);
             }
             $offre[$i]->setLieu($faker->city);
-            $offre[$i]->setLogo($faker->imageUrl(200, 480));
+            $offre[$i]->setLogo('https://picsum.photos/100/150');
             $offre[$i]->setSalaire('10€');
             $distanciel = $faker->randomElement([$distanciels['FullRemote'], $distanciels['Hybrid'], $distanciels['Non']]);
             $offre[$i]->setDistanciel($distanciel);

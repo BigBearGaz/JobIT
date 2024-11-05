@@ -32,10 +32,9 @@ class UserType extends AbstractType
 
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez entrer une date de naissance.',
-                    ]),
+                    
                     new LessThanOrEqual([
                         'value' => new \DateTime(), // La date actuelle
                         'message' => 'La date de naissance ne peut pas être dans le futur.',
