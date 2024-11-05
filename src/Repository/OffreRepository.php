@@ -46,6 +46,18 @@ class OffreRepository extends ServiceEntityRepository
 
         return new Paginator($query);
     }
+
+    public function getOffresPaginatorAsc(int $offset) 
+    {
+        $query = $this->createQueryBuilder('o')
+            ->orderBy('o.date_modification', 'ASC')
+            ->setMaxResults(self::OFFRES_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery()
+        ;
+
+        return new Paginator($query);
+    }
     //    /**
     //     * @return Offre[] Returns an array of Offre objects
     //     */

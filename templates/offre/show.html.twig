@@ -1,91 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de l'Offre{% endblock %}
+{% block title %}Détails de l'Offre
+{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <h1 class="mb-4">Détails de l'Offre</h1>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<h1 class="mb-4">Détails de l'Offre</h1>
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <img src="{{ asset('uploads/' ~ offre.logo) }}" alt="{{ offre.titre }}" class="img-fluid rounded">
-                        </div>
-                        <div class="col-md-8">
-                            <h2>{{ offre.titre }}</h2>
-                            <p><strong>Par :</strong> {{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</p>
-                            <p><strong>URL :</strong>  {{ offre.auteur.url }}</p>
-                        </div>
-                    </div>
+				<div class="card">
+					<div class="card-body">
+						<div class="row mb-3">
+							<div class="col-md-4">
+								<img src="{{ asset('uploads/' ~ offre.logo) }}" alt="{{ offre.titre }}" class="img-fluid rounded">
+							</div>
+							<div class="col-md-8">
+								<h2>{{ offre.titre }}</h2>
+								<p>
+									<strong>Par :</strong>
+									{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</p>
+								<p>
+									<strong>URL :</strong>
+									{{ offre.auteur.url }}</p>
+							</div>
+						</div>
 
-                    
 
-                    <table class="table table-striped">
-                        <tbody>
-                            <tr>
-                                <th>Publié par</th>
-                                <td>{{ offre.Category.nom }}</td>
-                            </tr>
-                            <tr>
-                                <th>Lieu</th>
-                                <td>{{  offre.Lieu }}</td>
-                            </tr>
-                            <tr>
-                                <th>Publié par</th>
-                                <td>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</td>
-                            </tr>
-                            <tr>
-                                <th>Type de Contrat</th>
-                                <td>{{ offre.typeContrat.nom }}</td>
-                            </tr>
-                           
-                            <tr>
-                                <th>Durée</th>
-                                <td>{{ offre.duree }}</td>
-                            </tr>
-                             <tr>
-                                <th>Salaire</th>
-                                <td>{{ offre.salaire }}</td>
-                            </tr>
-                            <tr>
-                                <th>Date de publication</th>
-                                <td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</td>
-                            </tr>
-                            <tr>
-                                <th>Description</th>
-                                <td>{{ offre.description }}</td>
-                            </tr>
-                            {% if offre.datePublication !=  offre.dateModification%}
-                                <tr>
-                                    <th>Date de modification</th>
-                                    <td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'Non définie' }}</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+						<table class="table table-striped">
+							<tbody>
+								<tr>
+									<th>Lieu</th>
+									<td>{{  offre.Lieu }}</td>
+								</tr>
+								<tr>
+									<th>Publié par</th>
+									<td>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</td>
+								</tr>
+								<tr>
+									<th>Type de Contrat</th>
+									<td>{{ offre.typeContrat.nom }}</td>
+								</tr>
 
-            <div class="mt-3">
-                <a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour à la liste</a>
-                <a href="{{ path('app_add_favori', {'id': offre.id}) }}" class="btn {% if app.user and offre.users.contains(app.user) %}btn-success{% else %}btn-warning{% endif %}">
-                    {% if app.user and offre.users.contains(app.user) %}
-                        Retirer des favoris
-                    {% else %}
-                        Ajouter aux favoris
-                    {% endif %}
-                </a>
-                {% if app.user %}
-                    {% if offre.auteur.id ==  app.user.id %}
-                    <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-primary">Modifier</a>
-                    {{ include('offre/_delete_form.html.twig') }}
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
+								<tr>
+									<th>Durée</th>
+									<td>{{ offre.duree }}</td>
+								</tr>
+								<tr>
+									<th>Salaire</th>
+									<td>{{ offre.salaire }}</td>
+								</tr>
+								<tr>
+									<th>Catégorie</th>
+									<td>{{ offre.category.nom }}</td>
+								</tr>
+								<tr>
+									<th>Date de publication</th>
+									<td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</td>
+								</tr>
+								<tr>
+									<th>Description</th>
+									<td>{{ offre.description }}</td>
+								</tr>
+								{% if offre.datePublication !=  offre.dateModification%}
+									<tr>
+										<th>Date de modification</th>
+										<td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'Non définie' }}</td>
+									</tr>
+								{% endif %}
+								<div class="mt-3">
+									<a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour à la liste</a>
+									<a href="{{ path('app_add_favori', {'id': offre.id}) }}" class="btn {% if app.user and offre.users.contains(app.user) %}btn-success{% else %}btn-warning{% endif %}">
+										{% if app.user and offre.users.contains(app.user) %}
+											Retirer des favoris
+										{% else %}
+											Ajouter aux favoris
+										{% endif %}
+									</a>
+									{% if app.user %}
+										{% if offre.auteur.id ==  app.user.id %}
+											<a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-primary">Modifier</a>
+											{{ include('offre/_delete_form.html.twig') }}
+										{% endif %}
+									{% endif %}
+								</div>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
 {% endblock %}

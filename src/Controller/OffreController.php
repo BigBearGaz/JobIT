@@ -41,12 +41,11 @@ final class OffreController extends AbstractController
     #[Route('/dateDesc',name:'app_offre_par_date', methods: ['GET'])]
 public function Desc(OffreRepository $offreRepository, Request $request): Response
 { 
-    $offres = $offreRepository->findBy([], ['date_modification' => 'DESC']);
     $offset = max(0, $request->query->getInt('offset', 0));
     $paginator = $offreRepository->getOffresPaginator($offset);
     
     return $this->render('offre/index.html.twig', [
-        'offres' => $offres,
+        'offres' => $paginator,
         'previous' => $offset - $offreRepository::OFFRES_PER_PAGE,
         'next' => min(count($paginator), $offset + $offreRepository::OFFRES_PER_PAGE),
         'nomCategorie' => ""
@@ -57,12 +56,11 @@ public function Desc(OffreRepository $offreRepository, Request $request): Respon
 public function Asc(OffreRepository $offreRepository, Request $request): Response
 {
   
-    $offres = $offreRepository->findBy([], ['date_modification' => 'ASC']);
     $offset = max(0, $request->query->getInt('offset', 0));
-    $paginator = $offreRepository->getOffresPaginator($offset);
+    $paginator = $offreRepository->getOffresPaginatorAsc($offset);
     
     return $this->render('offre/index.html.twig', [
-        'offres' => $offres,
+        'offres' => $paginator,
         'previous' => $offset - $offreRepository::OFFRES_PER_PAGE,
         'next' => min(count($paginator), $offset + $offreRepository::OFFRES_PER_PAGE),
         'nomCategorie' => ""
