@@ -9,6 +9,7 @@ use App\Form\OffreType;
 use App\Repository\CategoryRepository;
 use App\Repository\OffreRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -21,62 +22,50 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 final class OffreController extends AbstractController
 {
     #[Route(name: 'app_offre_index', methods: ['GET'])]
-    public function index(OffreRepository $offreRepository): Response
+    public function index(Request $request, OffreRepository $or)
+    : Response
     {   
         $statut = 0;
-        if ($this->getUser())
-        {
-            $statut =$this->getUser()->getStatut();
-            $userId = ($this->getUser()->getId());
-        }
-        else {
-            $userId=0;
-        }
-        $offres = $offreRepository->findBy([], ['date_publication' => 'ASC']);
-
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $or->getOffresPaginator($offset);
 
         return $this->render('offre/index.html.twig', [
-            'offres' => $offres,
-            'userId' => $userId,
-            'statut' => $statut
+            'statut' => $statut,
+            'offres' => $paginator,
+            'previous' => $offset - $or::OFFRES_PER_PAGE,
+            'next' => min(count($paginator), $offset + $or::OFFRES_PER_PAGE),
+            'nomCategorie' => ""
         ]);
     }
 
     #[Route('/dateDesc',name:'app_offre_par_date', methods: ['GET'])]
-public function Desc(OffreRepository $offreRepository): Response
-{
-    if ($this->getUser())
-        {
-            $userId = ($this->getUser()->getId());
-        }
-        else {
-            $userId=0;
-        }
-    
+public function Desc(OffreRepository $offreRepository, Request $request): Response
+{ 
     $offres = $offreRepository->findBy([], ['date_modification' => 'DESC']);
+    $offset = max(0, $request->query->getInt('offset', 0));
+    $paginator = $offreRepository->getOffresPaginator($offset);
     
     return $this->render('offre/index.html.twig', [
         'offres' => $offres,
-        'userId' => $userId
+        'previous' => $offset - $offreRepository::OFFRES_PER_PAGE,
+        'next' => min(count($paginator), $offset + $offreRepository::OFFRES_PER_PAGE),
+        'nomCategorie' => ""
     ]);
 }
 
 #[Route('/dateAsc',name:'app_offre_par_datee', methods: ['GET'])]
-public function Asc(OffreRepository $offreRepository): Response
+public function Asc(OffreRepository $offreRepository, Request $request): Response
 {
-    if ($this->getUser())
-        {
-            $userId = ($this->getUser()->getId());
-        }
-        else {
-            $userId=0;
-        }
-    
+  
     $offres = $offreRepository->findBy([], ['date_modification' => 'ASC']);
+    $offset = max(0, $request->query->getInt('offset', 0));
+    $paginator = $offreRepository->getOffresPaginator($offset);
     
     return $this->render('offre/index.html.twig', [
         'offres' => $offres,
-        'userId' => $userId
+        'previous' => $offset - $offreRepository::OFFRES_PER_PAGE,
+        'next' => min(count($paginator), $offset + $offreRepository::OFFRES_PER_PAGE),
+        'nomCategorie' => ""
     ]);
 }
 
@@ -214,15 +203,19 @@ public function Asc(OffreRepository $offreRepository): Response
 
 
     #[Route('offre/annonces/{id}', name: 'app_annonces', methods: ['GET'])]
-    public function showCategorie(OffreRepository $categories, CategoryRepository $cr, $id): Response
+    public function showCategorie(OffreRepository $categories, CategoryRepository $cr, Request $request, $id): Response
 
     {
         $nomCategorie = $cr->find($id)->getNom();
         $annonces = $categories->findBy(['category' => $id]);
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $categories->getOffresPaginator($offset);
 
         return $this->render('offre/index.html.twig', [
             'offres' => $annonces,
-            'nomCategorie' => $nomCategorie
+            'nomCategorie' => $nomCategorie,
+            'previous' => $offset - $categories::OFFRES_PER_PAGE,
+            'next' => min(count($paginator), $offset + $categories::OFFRES_PER_PAGE),
         ]);
     }
 
