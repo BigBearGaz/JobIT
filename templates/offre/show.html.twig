@@ -16,28 +16,47 @@
                         </div>
                         <div class="col-md-8">
                             <h2>{{ offre.titre }}</h2>
-                            <p><strong>Lieu :</strong> {{ offre.Lieu }}</p>
-                            <p><strong>Catégorie :</strong> {{ offre.Category.nom }}</p>
-                            {% if offre.duree %}
-                            <p><strong>Durée :</strong> {{ offre.duree }}</p>
-                            {% endif %}
+                            <p><strong>Par :</strong> {{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</p>
+                            <p><strong>URL :</strong>  {{ offre.auteur.url }}</p>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <h3>Description</h3>
-                        <p>{{ offre.description }}</p>
-                    </div>
+                    
 
                     <table class="table table-striped">
                         <tbody>
                             <tr>
                                 <th>Publié par</th>
+                                <td>{{ offre.Category.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Lieu</th>
+                                <td>{{  offre.Lieu }}</td>
+                            </tr>
+                            <tr>
+                                <th>Publié par</th>
                                 <td>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type de Contrat</th>
+                                <td>{{ offre.typeContrat.nom }}</td>
+                            </tr>
+                           
+                            <tr>
+                                <th>Durée</th>
+                                <td>{{ offre.duree }}</td>
+                            </tr>
+                             <tr>
+                                <th>Salaire</th>
+                                <td>{{ offre.salaire }}</td>
                             </tr>
                             <tr>
                                 <th>Date de publication</th>
                                 <td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ offre.description }}</td>
                             </tr>
                             {% if offre.datePublication !=  offre.dateModification%}
                                 <tr>

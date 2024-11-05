@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
+        Security $security,
         SluggerInterface $slugger,
         EntityManagerInterface $entityManager,
+        
         #[Autowire('%kernel.project_dir%/public/uploads')] string $uploadsDirectory
     ): Response {
         $user = new User();
@@ -56,6 +60,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'L\'utilisateur a été créé avec succès.');
+            $security->login($user);
             return $this->redirectToRoute('app_offre_index', [], Response::HTTP_SEE_OTHER);
         }
 

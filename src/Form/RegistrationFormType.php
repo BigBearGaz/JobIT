@@ -31,6 +31,8 @@ class RegistrationFormType extends AbstractType
         ->add('nom')
         ->add('prenom')
         ->add('email')
+        ->add('entreprise')
+        ->add('url')
         ->add('plainPassword', PasswordType::class, [
             // instead of being set onto the object directly,
             // this is read and encoded in the controller
@@ -50,10 +52,8 @@ class RegistrationFormType extends AbstractType
         ])
         ->add('date_naissance', DateType::class, [
             'widget' => 'single_text',
+            'required' => false,
             'constraints' => [
-                new NotBlank([
-                    'message' => 'Veuillez entrer une date de naissance.',
-                ]),
                 new LessThanOrEqual([
                     'value' => new \DateTime(), // La date actuelle
                     'message' => 'La date de naissance ne peut pas être dans le futur.',
