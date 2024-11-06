@@ -274,4 +274,18 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
         'nomCategorie' => ""
     ]);
 }
+
+#[Route('/mesOffres', name: 'app_mes_offres', methods: ['GET'])]
+    public function mesOffres(OffreRepository $offreRepository): Response
+    {   
+        $user= $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté.');
+            return $this->redirectToRoute('app_login');
+        }
+        $favorisOffre = $user->getTara();
+        return $this->render('offre/favoris.html.twig',['favorisOffre'=> $favorisOffre]);
+
+    }
+
 }

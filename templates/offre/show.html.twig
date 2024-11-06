@@ -17,50 +17,36 @@
 							</div>
 							<div class="col-md-8">
 								<h2>{{ offre.titre }}</h2>
+								<h6>{{ offre.category.nom }}</h6>
+								<hr>
 								<p>
-									<strong>Par :</strong>
-									{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</p>
-								<p>
-									<strong>URL :</strong>
-									{{ offre.auteur.url }}</p>
+									Publié le <strong>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</strong> par l'entreprise :
+									<strong>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</strong></p>
 							</div>
 						</div>
 
 
-						<table class="table table-striped">
+						<table class="table table-striped col-12">
 							<tbody>
 								<tr>
 									<th>Lieu</th>
 									<td>{{  offre.Lieu }}</td>
 								</tr>
 								<tr>
-									<th>Publié par</th>
-									<td>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</td>
-								</tr>
-								<tr>
 									<th>Type de Contrat</th>
-									<td>{{ offre.typeContrat.nom }}</td>
-								</tr>
-
-								<tr>
-									<th>Durée</th>
-									<td>{{ offre.duree }}</td>
+									<td>{{ offre.typeContrat.nom }} {% if offre.duree %} / {{ offre.duree }}{% endif %}</td>
 								</tr>
 								<tr>
 									<th>Salaire</th>
 									<td>{{ offre.salaire }}</td>
 								</tr>
 								<tr>
-									<th>Catégorie</th>
-									<td>{{ offre.category.nom }}</td>
-								</tr>
-								<tr>
-									<th>Date de publication</th>
-									<td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</td>
-								</tr>
-								<tr>
 									<th>Description</th>
 									<td>{{ offre.description }}</td>
+								</tr>
+								<tr>
+									<th>Site web</th>
+									<td><a href="{{ offre.auteur.url }}">{{ offre.auteur.url }}</a></td>
 								</tr>
 								{% if offre.datePublication !=  offre.dateModification%}
 									<tr>
