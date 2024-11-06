@@ -76,7 +76,7 @@ class UserType extends AbstractType
                     ]),
                 ], */
             
-        
+            ->add('url')
             ->add('logo', FileType::class, [
                 'label' => 'Logo',
                 'mapped' => false,

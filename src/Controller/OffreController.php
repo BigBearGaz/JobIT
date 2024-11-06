@@ -75,8 +75,12 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
         #[Autowire('%kernel.project_dir%/public/uploads')] string $brochuresDirectory
     ): Response
     {
+
         if (!$this->getUser()){
             return $this->redirectToRoute('app_login'); 
+        }
+        if ($this->getUser()->getStatut()->getId() !== 2){
+            return $this->redirectToRoute('app_lock'); 
         }
         $offre = new Offre();
         $form = $this->createForm(OffreType::class, $offre);
@@ -255,14 +259,19 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
 
     }
 
-    public function search(Request $request, EntityManagerInterface $entityManager): Response
+    public function search(Request $request, EntityManagerInterface $entityManager, OffreRepository $offreRepository): Response
 {
     $searchTerm = $request->query->get('q');
     $offres = $entityManager->getRepository(Offre::class)->searchByTerm($searchTerm);
+    $offset = max(0, $request->query->getInt('offset', 0));
+    $paginator = $offreRepository->getOffresPaginator($offset);
 
     return $this->render('offre/index.html.twig', [
         'offres' => $offres,
-        'searchTerm' => $searchTerm
+        'searchTerm' => $searchTerm,
+        'previous' => $offset - $offreRepository::OFFRES_PER_PAGE,
+        'next' => min(count($paginator), $offset + $offreRepository::OFFRES_PER_PAGE),
+        'nomCategorie' => ""
     ]);
 }
 }
