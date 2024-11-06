@@ -5,7 +5,6 @@ body {
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-
 }
 
 a {
@@ -110,7 +109,7 @@ h1 {
 
 .offer-image {
     height: 200px;
-    object-fit: cover;
+    object-fit: contain;
     width: 100%;
 }
 
@@ -130,7 +129,7 @@ h1 {
 }
 
 .btn-custom {
-    background-color: #3498db;
+    background-color: #8234db;
     border: none;
     color: white;
     padding: 8px 16px;
@@ -145,10 +144,6 @@ h1 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.btn-custom,
-.btn-secondary {
-    opacity: 0.9;
-}
 
 .btn-custom:hover,
 .btn-secondary:hover {
