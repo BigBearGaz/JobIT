@@ -8,8 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['offres']])]
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
 class Offre
 {
@@ -19,9 +20,11 @@ class Offre
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("offres")]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups("offres")]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

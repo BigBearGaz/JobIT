@@ -9,13 +9,17 @@
     
     {{ form_start(registrationForm) }}
         
+        {# Affichez tous les champs du formulaire sauf le bouton submit #}
+        {{ form_widget(registrationForm, {'exclude': ['submit']}) }}
+
         {% if registrationForm.statut.vars.value == 'Recruteur' %}
             <div>
                 {{ form_row(registrationForm.entreprise) }}
             </div>
         {% endif %}
-          <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }} 
-<script src="{{ asset('selecteur.js') }}"></script>
- 
+
+        <button type="submit" class="btn">Register</button>
+    {{ form_end(registrationForm) }}
+
+    <script src="{{ asset('selecteur.js') }}"></script>
 {% endblock %}

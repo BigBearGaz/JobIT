@@ -1,170 +1,142 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --background-gradient: linear-gradient(135deg, #fbff15 0%, #ac1818 100%);
+    --card-background: rgba(255, 255, 255, 0.95);
+    --transition-speed: 0.3s;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    height: 1000px;
+    background: var(--background-gradient);
+    color: var(--secondary-color);
+    line-height: 1.6;
 }
 
-a {
-    color: inherit; /* Adapte la couleur selon le contexte parent */
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: #007bff; /* Couleur au survol */
-}
-
-.icone {
-    height: 2em;
-    width: 2em;
-}
-
+/* Navigation Bar Enhancements */
 .navbar {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+    background-color: #2c3e50; /* Couleur de fond sombre pour la navbar */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Ombre plus marquée */
+    transition: all var(--transition-speed) ease;
 }
+
 .navbar-brand {
     font-weight: 700;
-    color: #333;
-    transition: color 0.3s ease;
+    color: #ffffff; /* Couleur blanche pour le texte de la marque */
 }
+
 .navbar-brand:hover {
-    color: #007bff;
+    color: #f39c12; /* Couleur dorée au survol */
 }
+
 .nav-link {
-    color: #555;
     font-weight: 500;
-    transition: color 0.3s ease;
-    position: relative;
+    color: #ecf0f1; /* Couleur claire pour les liens */
 }
+
 .nav-link:hover {
-    color: #007bff;
+    color: #f39c12; /* Couleur dorée au survol des liens */
 }
-.nav-link::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background-color: #007bff;
-    transition: width 0.3s ease, left 0.3s ease;
-}
-.nav-link:hover::after {
-    width: 100%;
-    left: 0;
-}
-.dropdown-menu {
-    border: none;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-.search-form {
-    position: relative;
-}
-.search-form input {
-    border: none;
-    background-color: #f8f9fa;
-    padding: 10px 40px 10px 15px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-.search-form input:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-}
-.search-form button {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #007bff;
-}
-
-h1 {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
+/* Card Enhancements */
 .card {
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--card-background);
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    height: 100%;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    /* Suppression des effets de transformation */
+    /* transform: translateY(-5px) scale(1.02); */
 }
 
 .offer-image {
-    height: 200px;
-    object-fit: contain;
-    width: 100%;
+    height: 150px; /* Définir une hauteur fixe pour l'image */
+    width: 100%; /* Largeur complète */
+    object-fit: contain; /* Maintient les proportions et affiche l'image en entier */
 }
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.card-title {
+/* Button Styles */
+.btn-custom,
+.btn-secondary {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
     font-weight: bold;
-    color: #3498db;
-}
-
-.card-text {
-    margin-bottom: 10px;
+    transition: all var(--transition-speed) ease;
 }
 
 .btn-custom {
-    background-color: #8234db;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
-    transition: all 0.3s ease;
+   background-color :var(--primary-color); 
+   color:white; 
 }
 
-.btn-custom:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+.btn-secondary { 
+   background-color :var(--secondary-color); 
+   color:white; 
 }
 
-
-.btn-custom:hover,
-.btn-secondary:hover {
-    opacity: 1;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+/* Animation Enhancements */
+.fade-in { 
+   animation :fadeInUp .6s ease-out forwards; 
 }
 
-.btn-secondary {
-    background-color: #95a5a6;
-    transition: all 0.3s ease;
+@keyframes fadeInUp { 
+   from { 
+      opacity:.6; 
+      transform translateY(20px); 
+   }
+   
+   to { 
+      opacity:.9; 
+      transform translateY(0); 
+   } 
 }
 
-.btn-secondary:hover {
-    background-color: #7f8c8d;
+/* Responsive Design */
+@media (max-width :768px) { 
+   .card { 
+      margin-bottom :20px; 
+   }
+   
+   .navbar-nav { 
+      margin-top :10px; 
+   }
 }
 
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
+/* Additional Dynamic Elements */
+.job-tag { 
+   display:inline-block; 
+   background-color :var(--accent-color); 
+   color:white; 
+   padding :5px10px; 
+   border-radius :15px; 
+   font-size :0.8em; 
+   margin-right :5px; 
+   margin-bottom :5px; 
+   transition :all var(--transition-speed) ease; 
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.job-tag:hover { 
+   transform :translateY(-2px); 
+   box-shadow :02px5px rgba(0,0,0,.2); 
+}
+
+.search-form input :focus { 
+   transform :scale(1.05); 
+}
+
+.search-form button:hover { 
+   animation:pulse1s infinite; 
+}
+
+@keyframes pulse { 
+   from { transform :scale(1); } 
+
+   to { transform :scale(1.1); } 
 }

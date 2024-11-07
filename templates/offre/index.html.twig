@@ -1,106 +1,111 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Offres
-{% endblock %}
+{% block title %}Liste des Offres{% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-
+    {{ parent() }}
 {% endblock %}
 
 {% block body %}
-	<div class="d-flex justify-content-center mb-4 fade-in" style="animation-delay: 0.2s;">
-		<a class="btn btn-outline-primary btn-sm me-2 btn-custom" href="/dateDesc">Trier par date décroissante</a>
-		<a class="btn btn-outline-primary btn-sm btn-custom" href="/dateAsc">Trier par date croissante</a>
-	</div>
+<div class="container">
+    <div class="d-flex justify-content-center mb-4 fade-in" style="animation-delay: 0.2s;">
+        <a class="btn btn-outline-primary btn-sm me-2 btn-custom" href="/dateDesc">Trier par date décroissante</a>
+        <a class="btn btn-outline-primary btn-sm btn-custom" href="/dateAsc">Trier par date croissante</a>
+    </div>
 
-	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-		{% for offre in offres %}
-			<div class="col fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
-				<div class="card h-100">
-					<img src="{{ asset('uploads/' ~ offre.logo) }}" class="offer-image" alt="{{ offre.titre }}" onerror="this.onerror=null; this.src='https://img.logoipsum.com/321.svg';">
-					<div class="card-body d-flex flex-column">
-						<h5 class="card-title mt-2">{{ offre.titre }}</h5>
-						<table class="table table-sm mt-3">
-							<tbody>
-								<tr >
-									<th scope="row">Lieu</th>
-									<td>{{ offre.Lieu }}</td>
-								</tr>
-								<tr>
-									<th scope="row">Type de contrat</th>
-									<td>{{ offre.typeContrat.nom }}</td>
-								</tr>
-								{% if offre.typeContrat.nom != 'CDI' %}
-									<tr>
-										<th scope="row">Durée</th>
-										<td>{{ offre.duree }}</td>
-									</tr>
-								{% endif %}
-								<tr>
-									<th scope="row">Date de publication</th>
-									<td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</td>
-								</tr>
-								<tr>
-									<th scope="row">Publié par</th>
-									<td>{{ offre.auteur.nom }} {{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</td>
-								</tr>
-								{% if offre.datePublication != offre.dateModification %}
-									<tr>
-										<th scope="row">Date de modification</th>
-										<td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</td>
-									</tr>
-								{% endif %}
-							</tbody>
-						</table>
-						<div class="mt-auto d-flex flex-row-reverse gap-3">
-							<a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm me-2">Voir détails</a>
-							{% if app.user %}
-								{% if offre.auteur.id == app.user.id %}
-									<a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
-								{% endif %}
-							{% endif %}
-						</div>
-					</div>
-				</div>
-			</div>
-		{% else %}
-			<div class="col-12 fade-in">
-				<div class="alert alert-info" role="alert">
-					Aucune offre trouvée.
-				</div>
-			</div>
-		{% endfor %}
-	</div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for offre in offres %}
+            <div class="col fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                <div class="card h-100">
+                    <img src="{{ asset('uploads/' ~ offre.logo) }}" class="offer-image" alt="{{ offre.titre }}" onerror="this.onerror=null; this.src='https://img.logoipsum.com/321.svg';">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mt-2">{{ offre.titre }}</h5>
+                        <table class="table table-sm mt-3">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Lieu</th>
+                                    <td>{{ offre.Lieu }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Type de contrat</th>
+                                    <td>{{ offre.typeContrat.nom }}</td>
+                                </tr>
+                                {% if offre.typeContrat.nom != 'CDI' %}
+                                    <tr>
+                                        <th scope="row">Durée</th>
+                                        <td>{{ offre.duree }}</td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <th scope="row">Date de publication</th>
+                                    <td>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Publié par</th>
+                                    <td>{{ offre.auteur.nom }} {{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</td>
+                                </tr>
+                                {% if offre.datePublication != offre.dateModification %}
+                                    <tr>
+                                        <th scope="row">Date de modification</th>
+                                        <td>{{ offre.dateModification ? offre.dateModification|date('d-m-Y') : 'N/A' }}</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
 
-	<div class="d-flex justify-content-center mt-4">
-		{% if previous >= 0 %}
-			<a href="{{ path('app_offre_index', { offset: previous }) }}" class="btn btn-success me-2">Précédent</a>
-		{% endif %}
-		{% if next < offres|length %}
-			<a href="{{ path('app_offre_index', { offset: next }) }}" class="btn btn-success">Suivant</a>
-		{% endif %}
-	</div>
+                        <!-- Boutons d'action -->
+                        <div class="mt-auto d-flex flex-row-reverse gap-3">
+                            <a href="{{ path('app_offre_show', {'id': offre.id}) }}" class="btn btn-primary btn-sm me-2">Voir détails</a>
+                            {% if app.user %}
+                                {% if offre.auteur.id == app.user.id %}
+                                    <a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 fade-in">
+                <div class="alert alert-info" role="alert">
+                    Aucune offre trouvée.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        {% if previous >= 0 %}
+            <a href="{{ path('app_offre_index', { offset: previous }) }}" class="btn btn-success col-4 me-2">Précédent</a>
+        {% endif %}
+        {% if next < offres|length %}
+            <a href="{{ path('app_offre_index', { offset: next }) }}" class="btn btn-success col-4">Suivant</a>
+        {% endif %}
+    </div>
+
 </div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-const elements = document.querySelectorAll('.fade-in');
-elements.forEach(element => {
-element.style.opacity = '0';
-});
+<script>
+// Animation fade-in pour les éléments
+document.addEventListener('DOMContentLoaded', function () {
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach(element => {
+        element.style.opacity = '0';
+    });
 
-function checkScroll() {
-elements.forEach(element => {
-const elementTop = element.getBoundingClientRect().top;
-if (elementTop < window.innerHeight) {
-element.style.animationPlayState = 'running';
-}
-});
-}
+    function checkScroll() {
+        elements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            if (elementTop < window.innerHeight) {
+                element.style.animationPlayState = 'running';
+            }
+        });
+    }
 
-window.addEventListener('scroll', checkScroll);
-checkScroll();
+    window.addEventListener('scroll', checkScroll);
+    checkScroll();
 });
-	</script>
+</script>
+
 {% endblock %}

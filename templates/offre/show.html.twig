@@ -13,15 +13,18 @@
 					<div class="card-body">
 						<div class="row mb-3">
 							<div class="col-md-4">
-								<img src="{{ asset('uploads/' ~ offre.logo) }}" alt="{{ offre.titre }}" class="img-fluid rounded">
+								<img src="{{ asset('uploads/' ~ offre.logo) }}" class="offer-image" alt="{{ offre.titre }}" onerror="this.onerror=null; this.src='https://img.logoipsum.com/321.svg';">
 							</div>
 							<div class="col-md-8">
 								<h2>{{ offre.titre }}</h2>
 								<h6>{{ offre.category.nom }}</h6>
 								<hr>
 								<p>
-									Publié le <strong>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</strong> par l'entreprise :
-									<strong>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</strong></p>
+									Publié le
+									<strong>{{ offre.datePublication ? offre.datePublication|date('d-m-Y') : 'Non définie' }}</strong>
+									par l'entreprise :
+									<strong>{{ offre.auteur.nom }}{{ offre.auteur.prenom }}{{ offre.auteur.entreprise }}</strong>
+								</p>
 							</div>
 						</div>
 
@@ -34,7 +37,12 @@
 								</tr>
 								<tr>
 									<th>Type de Contrat</th>
-									<td>{{ offre.typeContrat.nom }} {% if offre.duree %} / {{ offre.duree }}{% endif %}</td>
+									<td>{{ offre.typeContrat.nom }}
+										{% if offre.duree %}
+											/
+											{{ offre.duree }}
+										{% endif %}
+									</td>
 								</tr>
 								<tr>
 									<th>Salaire</th>
@@ -46,7 +54,13 @@
 								</tr>
 								<tr>
 									<th>Site web</th>
-									<td><a href="{{ offre.auteur.url }}">{{ offre.auteur.url }}</a></td>
+									<td>
+										{% if offre.auteur.url|default is not empty and 'http' in offre.auteur.url %}
+											<a href="{{ offre.auteur.url }}" target="_blank" rel="noopener noreferrer">{{ offre.auteur.url }}</a>
+										{% else %}
+											<a href="{{ app.request.uri }}">{{ offre.auteur.url|default('Aucune URL valide') }}</a>
+										{% endif %}
+									</td>
 								</tr>
 								{% if offre.datePublication !=  offre.dateModification%}
 									<tr>
@@ -67,13 +81,13 @@
 							</tbody>
 						</table>
 						{% if app.user %}
-										{% if offre.auteur.id ==  app.user.id %}
-											<div class="d-flex  flex-row-reverse gap-2">
-											<a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-primary col-2">Modifier</a>
-											{{ include('offre/_delete_form.html.twig') }}
-											</div>
-										{% endif %}
-									{% endif %}
+							{% if offre.auteur.id ==  app.user.id %}
+								<div class="d-flex  flex-row-reverse gap-2">
+									<a href="{{ path('app_offre_edit', {'id': offre.id}) }}" class="btn btn-primary col-2">Modifier</a>
+									{{ include('offre/_delete_form.html.twig') }}
+								</div>
+							{% endif %}
+						{% endif %}
 					</div>
 				</div>
 
