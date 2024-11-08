@@ -1,50 +1,13 @@
-{# error401.html.twig #}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erreur 401 - Accès non autorisé</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-        .fullscreen-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: black;
-        }
-        .fullscreen-gif {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        .error-message {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            font-family: Arial, sans-serif;
-            font-size: 24px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-    </style>
-</head>
-<body>
-    <div class="fullscreen-container">
-        <img src="https://media.giphy.com/media/3o7btT1T9qpQZWhNlK/giphy.gif" alt="Erreur 401 GIF" class="fullscreen-gif">
-        <div class="error-message">
-            <h1>Erreur 401 - Accès non autorisé</h1>
-            <p>Désolé, vous n'avez pas le droit d'entrer ici. C'est une zone VIP !</p>
-        </div>
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Offres{% endblock %}
+
+{% block body %}
+<div class="fullscreen-container">
+    <img src="https://media.giphy.com/media/3o7btT1T9qpQZWhNlK/giphy.gif" alt="Erreur 401 GIF" class="fullscreen-gif">
+    <div class="error-message">
+        <h1>Erreur 401 - Accès non autorisé</h1>
+        <p>Désolé, vous n'avez pas le droit d'entrer ici. C'est une zone VIP !</p>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

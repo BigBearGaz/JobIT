@@ -2,10 +2,6 @@
 
 {% block title %}Liste des Offres{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block body %}
 <div class="container">
     <div class="d-flex justify-content-center mb-4 fade-in" style="animation-delay: 0.2s;">
@@ -85,27 +81,5 @@
     </div>
 
 </div>
-
-<script>
-// Animation fade-in pour les éléments
-document.addEventListener('DOMContentLoaded', function () {
-    const elements = document.querySelectorAll('.fade-in');
-    elements.forEach(element => {
-        element.style.opacity = '0';
-    });
-
-    function checkScroll() {
-        elements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            if (elementTop < window.innerHeight) {
-                element.style.animationPlayState = 'running';
-            }
-        });
-    }
-
-    window.addEventListener('scroll', checkScroll);
-    checkScroll();
-});
-</script>
 
 {% endblock %}

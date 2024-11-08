@@ -3,13 +3,12 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <h1>Créer un Compte</h1>
 
     {{ form_errors(registrationForm) }}
     
     {{ form_start(registrationForm) }}
         
-        {# Affichez tous les champs du formulaire sauf le bouton submit #}
         {{ form_widget(registrationForm, {'exclude': ['submit']}) }}
 
         {% if registrationForm.statut.vars.value == 'Recruteur' %}
@@ -18,7 +17,7 @@
             </div>
         {% endif %}
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn btn-primary">Créer le compte</button>
     {{ form_end(registrationForm) }}
 
     <script src="{{ asset('selecteur.js') }}"></script>

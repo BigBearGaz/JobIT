@@ -3,48 +3,49 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
-    
-    {{ form_start(form, {'action': path('app_user_edit', {'id': app.user.id}), 'method': 'POST'}) }}
-    {{ form_row(form._token) }}
-    {% if user.nom %}
-    <div>
-        {{ form_row(form.nom) }}
-    </div>
-    <div>
-        {{ form_row(form.prenom) }}
-    </div>
-    <div>
-        {{ form_row(form.date_naissance) }}
-    </div>
-    {% endif %}
-    {% if user.entreprise %}
-    <div>
-        {{ form_row(form.entreprise) }}
-    </div>
-    <div>
-        {{ form_row(form.url) }}
-    </div>
-    {% endif %}
-    <div>
-        {{ form_row(form.email) }}
-    </div>
-    <div>
-        {{ form_row(form.Adresse) }}
-    </div>
-    <div>
-        {{ form_row(form.tel) }}
-    </div>
-    <div>
-        {{ form_row(form.logo) }}
+    <h1>Modifier mon Profil</h1>
+    <div class="container d-flex justify-content-center">
+        
+        {{ form_start(form, {'action': path('app_user_edit', {'id': app.user.id}), 'method': 'POST'}) }}
+            {{ form_row(form._token) }}
+            {% if user.nom %}
+            <div class="maxWidth">
+                {{ form_row(form.nom) }}
+            </div>
+            <div class="maxWidth">
+                {{ form_row(form.prenom) }}
+            </div>
+            <div class="maxWidth">
+                {{ form_row(form.date_naissance) }}
+            </div>
+            {% endif %}
+            {% if user.entreprise %}
+            <div class="maxWidth">
+                {{ form_row(form.entreprise) }}
+            </div>
+            <div class="maxWidth">
+                {{ form_row(form.url) }}
+            </div>
+            {% endif %}
+            <div class="maxWidth">
+                {{ form_row(form.email) }}
+            </div>
+            <div class="maxWidth">
+                {{ form_row(form.Adresse) }}
+            </div>
+            <div class="maxWidth">
+                {{ form_row(form.tel) }}
+            </div>
+            <div class="maxWidth">
+                {{ form_row(form.logo) }}
+            </div>
+            <div class="d-flex justify-content-around mt-4">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <a href="{{ path('app_user_index') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+        {{ form_end(form, {'render_rest': false}) }}
     </div>
 
-    <div>
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-    </div>
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
-    {{ form_end(form, {'render_rest': false}) }}
 
     {% if form.vars.errors is not empty %}
         <div class="alert alert-danger">
