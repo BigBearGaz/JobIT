@@ -221,8 +221,8 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
         ]);
     }
 
-    #[Route('/favoris/{id}', name: 'app_add_favori', methods: ['GET', 'POST'])]
-    public function addFavori(Offre $offre, EntityManagerInterface $entityManager): Response
+    #[Route('/favoris/{id}/{url}', name: 'app_add_favori', methods: ['GET', 'POST'])]
+    public function addFavori(Offre $offre, EntityManagerInterface $entityManager, $id, $url): Response
     {   
         $user = $this->getUser();
         
@@ -233,17 +233,15 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
         
         if ($offre->getUsers()->contains($user)) {
             $offre->removeUser($user);
-            $entityManager->persist($offre);
-            $entityManager->flush();
-            $this->addFlash('info', 'Cette offre est déjà dans vos favoris.');
         } else {
             $offre->addUser($user);
+        }
             $entityManager->persist($offre);
             $entityManager->flush();
-            $this->addFlash('success', 'L\'offre a été ajoutée à vos favoris.');
-        }
-
-        return $this->redirectToRoute('app_offre_show', ['id' => $offre->getId()]);
+        
+        return $url === 'show' 
+        ? $this->redirectToRoute('app_offre_show', ['id' => $offre->getId()]) 
+        : $this->redirectToRoute('app_offre_index');
     }
 
     #[Route('/favoris', name: 'app_favori', methods: ['GET', 'POST'])]
