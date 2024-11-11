@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\OffreType;
 use App\Repository\CategoryRepository;
 use App\Repository\OffreRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,7 +56,7 @@ public function Desc(OffreRepository $offreRepository, Request $request): Respon
 #[Route('/dateAsc',name:'app_offre_par_datee', methods: ['GET'])]
 public function Asc(OffreRepository $offreRepository, Request $request): Response
 {
-  
+
     $offset = max(0, $request->query->getInt('offset', 0));
     $paginator = $offreRepository->getOffresPaginatorAsc($offset);
     
@@ -257,24 +258,26 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
 
     }
 
-    public function search(Request $request, EntityManagerInterface $entityManager, OffreRepository $offreRepository): Response
-{
+    public function search(Request $request, OffreRepository $offreRepository, EntityManagerInterface $entityManager): Response
+    {
     $searchTerm = $request->query->get('q');
-    $offres = $entityManager->getRepository(Offre::class)->searchByTerm($searchTerm);
+    $offres = $offreRepository->searchOffre($searchTerm);
+    $recruteurs = $entityManager->getRepository(User::class)->searchUser($searchTerm);
     $offset = max(0, $request->query->getInt('offset', 0));
     $paginator = $offreRepository->getOffresPaginator($offset);
 
-    return $this->render('offre/index.html.twig', [
+    return $this->render('offre/search.html.twig', [
         'offres' => $offres,
+        'recruteurs' => $recruteurs,
         'searchTerm' => $searchTerm,
         'previous' => $offset - $offreRepository::OFFRES_PER_PAGE,
         'next' => min(count($paginator), $offset + $offreRepository::OFFRES_PER_PAGE),
         'nomCategorie' => ""
     ]);
-}
+    }
 
 
-#[Route('/mesOffres', name: 'app_mes_offres', methods: ['GET'])]
+    #[Route('/mesOffres', name: 'app_mes_offres', methods: ['GET'])]
     public function mesOffres(OffreRepository $offreRepository): Response
     {   
         $user= $this->getUser();
@@ -285,6 +288,15 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
         $favorisOffre = $user->getTara();
         return $this->render('offre/favoris.html.twig',['favorisOffre'=> $favorisOffre]);
 
+    }
+
+    #[Route('/usersOffres/{id}', name: 'app_users_offre', methods: ['GET', 'POST'])]
+    public function usersOffres(UserRepository $userRepository, $id): Response
+    {   
+        $selectedUser = $userRepository->find($id);
+        $offres = $selectedUser->getOffres();
+
+        return $this->render('offre/offresByUser.html.twig',['offres'=> $offres]);
     }
 
 }

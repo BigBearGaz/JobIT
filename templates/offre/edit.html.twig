@@ -7,20 +7,20 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <h1 class="mb-4">Modifier l'Offre</h1>
-
             <div class="card">
                 <div class="card-body">
-                    {{ include('offre/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+                    {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <div class="d-flex gap-2 justify-content-between mt-5">
+                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                            <a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                            {{ include('offre/_delete_form.html.twig') }}
+                        </div>
+                    {{ form_end(form) }}
                 </div>
-            </div>
-
-            <div class="mt-3">
-                <a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour à la liste</a>
-            </div>
-            <div class="mt-3">
-                {{ include('offre/_delete_form.html.twig') }}
             </div>
         </div>
     </div>
 </div>
+<script src="{{ asset('duree.js') }}"></script>
 {% endblock %}

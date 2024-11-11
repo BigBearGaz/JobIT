@@ -21,15 +21,13 @@ class OffreRepository extends ServiceEntityRepository
         parent::__construct($registry, Offre::class);
     }
 
-    public function searchByTerm($term)
+    public function searchOffre($term)
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.Auteur', 'u')
             ->where('o.titre LIKE :term')
             ->orWhere('o.description LIKE :term')
             ->orWhere('o.Lieu LIKE :term')
-            ->orWhere('u.nom LIKE :term')
-            ->orWhere('u.prenom LIKE :term')
             ->setParameter('term', '%' . $term . '%')
             ->getQuery()
             ->getResult();

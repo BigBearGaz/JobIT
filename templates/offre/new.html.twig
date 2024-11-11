@@ -12,10 +12,21 @@
 
             <div class="card">
                 <div class="card-body">
-                    {{ include('offre/_form.html.twig') }}
-                    <a href="{{ path('app_offre_index') }}" class="btn btn-secondary mt-3">
-                    Annuler
-                    </a>
+                    {# {{ include('offre/_form.html.twig') }} #}
+                    {{ form_start(form) }}
+                    {{ form_row (form.titre, {'label':'Intitulé'})}}
+                    {{ form_row (form.category, {'label':'Catégorie'})}}
+                    {{ form_row (form.type_contrat, {'label':'Type de contrat'})}}
+                    {{ form_row (form.duree, {'label':'Durée'})}}
+                    {{ form_row (form.competences, {'label':'Compétences / Formation Attendus'})}}
+                    {{ form_rest(form) }}
+                    <div class="d-flex align-items-end gap-2 justify-content-end">
+                        <button type="submit" class="btn btn-primary">Publier l'offre</button>
+                        <a href="{{ path('app_offre_index') }}" class="btn btn-secondary mt-3">
+                        Annuler
+                        </a>
+                    </div>
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
