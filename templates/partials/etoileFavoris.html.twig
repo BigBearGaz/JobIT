@@ -1,18 +1,14 @@
 {% if app.user %}
     {% set currentObject = (fromUrl is not same as('favoris')) ? offre : favori %}
     <a class="mx-2" href="{{ path('app_add_favori', {'id': currentObject.id, 'url': fromUrl }) }}">
-        <img class="icon" 
-             src="{{ currentObject.users.contains(app.user) 
-                ? asset('icons/star.png') 
-                : asset('icons/nostar.png') }}">
         {% set favorisLabel = currentObject.users.contains(app.user)
             ? 'Retirer des favoris'
             : 'Ajouter aux favoris'
         %}
         <img class="icon" 
              src="{{ currentObject.users.contains(app.user)
-                ? 'icons/star.png'
-                : 'icons/nostar.png' }}" 
+                ? asset('icons/star.png')
+                : asset('icons/nostar.png') }}" 
              alt="{{ favorisLabel }}" 
              title="{{ favorisLabel }}">
     </a>
