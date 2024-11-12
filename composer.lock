@@ -3510,16 +3510,16 @@
         },
         {
             "name": "symfony/asset",
-            "version": "v6.4.8",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/asset.git",
-                "reference": "c668aa320e26b7379540368832b9d1dd43d32603"
+                "reference": "2466c17d61d14539cddf77e57ebb9cc971185302"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/asset/zipball/c668aa320e26b7379540368832b9d1dd43d32603",
-                "reference": "c668aa320e26b7379540368832b9d1dd43d32603",
+                "url": "https://api.github.com/repos/symfony/asset/zipball/2466c17d61d14539cddf77e57ebb9cc971185302",
+                "reference": "2466c17d61d14539cddf77e57ebb9cc971185302",
                 "shasum": ""
             },
             "require": {
@@ -3559,7 +3559,7 @@
             "description": "Manages URL generation and versioning of web assets such as CSS stylesheets, JavaScript files and image files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/asset/tree/v6.4.8"
+                "source": "https://github.com/symfony/asset/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -3575,7 +3575,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:49:08+00:00"
+            "time": "2024-10-25T15:07:50+00:00"
         },
         {
             "name": "symfony/asset-mapper",
@@ -11827,7 +11827,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -11835,6 +11835,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
