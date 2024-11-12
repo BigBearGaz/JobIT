@@ -28,6 +28,7 @@ class OffreRepository extends ServiceEntityRepository
             ->where('o.titre LIKE :term')
             ->orWhere('o.description LIKE :term')
             ->orWhere('o.Lieu LIKE :term')
+            ->orWhere('u.entreprise LIKE :term')
             ->setParameter('term', '%' . $term . '%')
             ->getQuery()
             ->getResult();
