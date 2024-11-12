@@ -223,27 +223,38 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
     }
 
     #[Route('/favoris/{id}/{url}', name: 'app_add_favori', methods: ['GET', 'POST'])]
-    public function addFavori(Offre $offre, EntityManagerInterface $entityManager, $id, $url): Response
-    {   
-        $user = $this->getUser();
-        
-        if (!$user) {
-            $this->addFlash('error', 'Vous devez être connecté pour ajouter un favori.');
-            return $this->redirectToRoute('app_login');
-        }
-        
-        if ($offre->getUsers()->contains($user)) {
-            $offre->removeUser($user);
-        } else {
-            $offre->addUser($user);
-        }
-            $entityManager->persist($offre);
-            $entityManager->flush();
-        
-        return $url === 'show' 
-        ? $this->redirectToRoute('app_offre_show', ['id' => $offre->getId()]) 
-        : $this->redirectToRoute('app_offre_index');
+public function addFavori(Offre $offre, EntityManagerInterface $entityManager, $id, $url): Response
+{   
+    $user = $this->getUser();
+    
+    if (!$user) {
+        $this->addFlash('error', 'Vous devez être connecté pour ajouter un favori.');
+        return $this->redirectToRoute('app_login');
     }
+    
+    if ($offre->getUsers()->contains($user)) {
+        $offre->removeUser($user);
+        $this->addFlash('info', 'Offre retirée des favoris.');
+    } else {
+        $offre->addUser($user);
+        $this->addFlash('success', 'Offre ajoutée aux favoris.');
+    }
+
+    $entityManager->persist($offre);
+    $entityManager->flush();
+
+    switch ($url) {
+        case 'show':
+            return $this->redirectToRoute('app_offre_show', ['id' => $offre->getId()]);
+        case 'index':
+            return $this->redirectToRoute('app_offre_index');
+        case 'favoris':
+            return $this->redirectToRoute('app_favori');
+        default:
+            $this->addFlash('warning', 'Redirection inconnue, retour à la page d\'accueil.');
+            return $this->redirectToRoute('app_home');
+    }
+}
 
     #[Route('/favoris', name: 'app_favori', methods: ['GET', 'POST'])]
     public function mesFavoris(OffreRepository $offreRepository): Response

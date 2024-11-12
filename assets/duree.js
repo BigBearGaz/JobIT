@@ -3,6 +3,7 @@ console.log('duree.js');
 
 selecteur = document.querySelector('#offre_type_contrat');
 dureeField = document.querySelector('#offre_duree');
+
 dureeField.parentElement.style.display = 'none';
 
 selected = 1;
