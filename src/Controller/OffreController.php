@@ -131,7 +131,6 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
     {   
         $selectedOffre = $repository->find($id);
         $users = $selectedOffre->getUsers();
-        // dd($selectedOffre);
         return $this->render('offre/show.html.twig', [
             'offre' => $offre,
             'users' => $users,
@@ -159,28 +158,18 @@ public function Asc(OffreRepository $offreRepository, Request $request): Respons
 
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-
-                // Move the file to the directory where brochures are stored
                 try {
                     $brochureFile->move($brochuresDirectory, $newFilename);
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
                 }
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
                 $offre->setLogo($newFilename);
             }
        
-
-                
-
             $offre->setDateModification(new \DateTime());
             $entityManager->flush();
 
-        
             return $this->redirectToRoute('app_offre_index', [], Response::HTTP_SEE_OTHER);
         }
 
